@@ -169,7 +169,7 @@ Si le polling reçoit une 409 (job non done) avant le timeout, l'erreur est prop
 
 ---
 
-## Résumé des fichiers à modifier
+## Résumé des fichiers à modifier (Passe 1)
 
 | Fichier | Statut | Action |
 |---|---|---|
@@ -182,3 +182,178 @@ Si le polling reçoit une 409 (job non done) avant le timeout, l'erreur est prop
 | `apps/api/tests/test_api.py` | 🟡 Suggestion | Ajouter 409, 422, edge cases |
 | `apps/api/tests/test_pdf_generator.py` | 🟡 Suggestion | Créer le fichier |
 | `apps/api/tests/test_health.py` | 🟡 Suggestion | Supprimer (doublon) |
+
+---
+
+## Passe 2 — Vérification des corrections
+
+**Date :** 2026-03-25  
+**Reviewer :** Agent Reviewer (T7 — 2ème passe)  
+**Scope :** Vérification des 4 bloquants + 3 fixes sécu + régressions éventuelles
+
+---
+
+### ✅ Bloquant 1 — `models/job.py` : Schéma Pydantic
+
+| Type attendu | Présent ? | Détail |
+|---|---|---|
+| `Difficulty` | ✅ | `beginner / intermediate / expert` |
+| `Format` | ✅ | `a4 / a3` |
+| `JobStatus` | ✅ | `pending / processing / done / failed` |
+| `ColorLegendEntry` | ✅ | `symbol`, `hex`, `name` |
+| `Job` | ✅ | Tous les champs : `id`, `status`, `difficulty`, `format`, `color_count`, `color_legend`, `preview_url`, `coloring_pdf_url`, `reference_pdf_url`, `processing_ms`, `created_at`, `expires_at`, `error` |
+| `JobCreateResponse` | ✅ | `job_id`, `status`, `poll_url` |
+
+**→ RÉSOLU ✅**
+
+---
+
+### ✅ Bloquant 2 — `image_processor.py` : Fonctions core
+
+| Élément attendu | Présent ? | Détail |
+|---|---|---|
+| `HACHETTE_SYMBOLS` | ✅ | 50 symboles : 1-9 + A-Z + 15 caractères spéciaux |
+| `get_hachette_symbol(index)` | ✅ | Avec validation de range + `ValueError` |
+| `_color_name_fr(rgb)` | ✅ | Classification HSV → 8 couleurs françaises |
+| `process_image(image_path, job_dir, difficulty)` | ✅ | Pipeline complet : load/resize → k-means LAB → reference.png → edges/coloring.png → labels.npy/edges.npy → légende |
+| `generate_preview(coloring_path, preview_path)` | ✅ | Resize max 800px via `_resize()` |
+| Retour `List[ColorLegendEntry]` | ✅ | Un entry par cluster avec symbol/hex/name |
+
+**→ RÉSOLU ✅**
+
+---
+
+### ✅ Bloquant 3 — `pdf_generator.py` : Fonctions + nuancier
+
+| Élément attendu | Présent ? | Détail |
+|---|---|---|
+| `generate_coloring_pdf()` | ✅ | edges.npy → B&W image + legend |
+| `generate_reference_pdf()` | ✅ | reference.png + legend |
+| Nuancier bas de page | ✅ | `_draw_legend()` : carrés colorés 22pt, symbole Hachette bold centré, nom français, hachures B&W alternées pour impression monochrome |
+| Support A4/A3 | ✅ | Via `PAGE_SIZES` dict + `fmt.value` |
+
+**→ RÉSOLU ✅**
+
+---
+
+### ✅ Bloquant 4 — `api.test.ts` : Tests front-end corrects
+
+| Élément vérifié | Présent ? | Détail |
+|---|---|---|
+| Import `createJob` et `getJob` | ✅ | Fonctions correctes (plus `getJobStatus`) |
+| Types importés `Job`, `CreateJobResponse`, `ColorLegendEntry` | ✅ |  |
+| Assertions sur `result.id` (pas `job_id`) | ✅ | Test dédié "Job uses id (not job_id)" + `@ts-expect-error` |
+| Assertions sur `coloring_pdf_url` (pas `pdf_url`) | ✅ | Testé dans `getJob` happy path |
+| Couverture `createJob` : POST FormData, 413, paramètres | ✅ | 3 cas |
+| Couverture `getJob` : GET, champs Job, pending, 404, cache no-store | ✅ | 5 cas |
+| Vérification types compile-time | ✅ | Suite `Type shapes` dédiée |
+
+**→ RÉSOLU ✅**
+
+---
+
+### ✅ Fix sécu C1 — IP rate-limiting : `request.client.host` uniquement
+
+```python
+def _get_client_ip(request: Request) -> str:
+    """Return the direct TCP peer IP — never trust X-Forwarded-For (C1)."""
+    if request.client:
+        return request.client.host
+    return "unknown"
+```
+Aucune lecture de `X-Forwarded-For` ou autre header dans tout le fichier. Le commentaire docstring est explicite sur la raison.
+
+**→ RÉSOLU ✅**
+
+---
+
+### ✅ Fix sécu C2 — Timeout processing : `asyncio.wait_for(timeout=120)`
+
+```python
+PROCESSING_TIMEOUT_S = 120
+
+await asyncio.wait_for(
+    loop.run_in_executor(_executor, _sync_pipeline, job_id, image_path, difficulty, fmt),
+    timeout=float(PROCESSING_TIMEOUT_S),
+)
+```
+`asyncio.TimeoutError` bien capturé → job passe en `failed` avec message explicite.
+
+**→ RÉSOLU ✅**
+
+---
+
+### ✅ Fix sécu C3 — Lecture upload en streaming chunks 64KB
+
+```python
+_UPLOAD_CHUNK = 64 * 1024  # 64 KB
+
+async def _read_upload_streaming(image: UploadFile) -> bytes:
+    chunks: List[bytes] = []
+    size = 0
+    while True:
+        chunk = await image.read(_UPLOAD_CHUNK)
+        if not chunk: break
+        size += len(chunk)
+        if size > MAX_IMAGE_SIZE:
+            raise HTTPException(status_code=413, ...)
+        chunks.append(chunk)
+    return b"".join(chunks)
+```
+Rejet préemptif dès que le seuil est dépassé sans attendre la fin de la lecture.
+
+**→ RÉSOLU ✅**
+
+---
+
+### 🎁 Bonus — Suggestions Passe 1 aussi appliquées
+
+| Suggestion | Appliquée ? |
+|---|---|
+| `lifespan` pattern (remplace `on_event` déprécié) | ✅ Présent dans `main.py` |
+| CORS via env var `CORS_ORIGINS` | ✅ `os.getenv("CORS_ORIGINS", "...")` avec fallback raisonnable |
+| Docs désactivés en prod | ✅ `docs_url=None if _IS_PROD else "/docs"` |
+
+---
+
+### ⚠️ Points mineurs introduits (non bloquants)
+
+#### M1 — `asyncio.get_event_loop()` déprécié (Python 3.10+)
+**Fichier :** `routes/jobs.py`, fonction `_process_job`
+
+```python
+loop = asyncio.get_event_loop()  # ← DepreactionWarning Python ≥ 3.10
+```
+
+Dans une coroutine async, la forme correcte est :
+```python
+loop = asyncio.get_running_loop()
+```
+`get_event_loop()` dans un contexte async émet un `DeprecationWarning` depuis Python 3.10 et sera supprimé dans une future version. À corriger prochainement mais non bloquant.
+
+#### M2 — `_rate_store` : purge globale toujours absente
+Noté en Passe 1 (suggestion #8). Non adressé — compréhensible, non bloquant pour un usage normal.
+
+---
+
+### Résumé Passe 2
+
+| Catégorie | Résultat |
+|---|---|
+| Bloquant B1 — models/job.py | ✅ Résolu |
+| Bloquant B2 — image_processor.py | ✅ Résolu |
+| Bloquant B3 — pdf_generator.py | ✅ Résolu |
+| Bloquant B4 — api.test.ts | ✅ Résolu |
+| Sécu C1 — IP directe uniquement | ✅ Résolu |
+| Sécu C2 — timeout 120s | ✅ Résolu |
+| Sécu C3 — streaming 64KB | ✅ Résolu |
+| Nouvelles régressions | ✅ Aucune bloquante |
+| Points mineurs nouveaux | ⚠️ 1 mineur (M1 — get_event_loop) |
+
+---
+
+## Verdict final : ✅ APPROVED
+
+> Tous les bloquants et fixes sécu de la Passe 1 ont été correctement implémentés.  
+> Le code est prêt pour le passage en phase suivante (QA Engineer / déploiement).  
+> Seul point d'attention : remplacer `asyncio.get_event_loop()` par `asyncio.get_running_loop()` lors du prochain passage (non bloquant).

@@ -22,7 +22,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse
 
 from app.models.job import Difficulty, Format, Job, JobCreateResponse, JobStatus
@@ -69,8 +69,8 @@ async def create_job(
     request: Request,
     background_tasks: BackgroundTasks,
     image: UploadFile,
-    difficulty: str = "beginner",
-    format: str = "a4",
+    difficulty: str = Form("beginner"),
+    format: str = Form("a4"),
 ):
     # ── Validate difficulty & format ──────────────────────────────────
     try:
@@ -318,15 +318,25 @@ def _check_rate_limit(ip: str) -> None:
     _rate_store[ip].append(now)
 
 
-async def _read_upload_streaming(image: UploadFile) -> bytes:
-    """Stream-read the upload, rejecting oversized files before buffering (C3).
+_UPLOAD_CHUNK = 64 * 1024  # 64 KB per read
 
-    Raises HTTP 413 as soon as the cumulative size exceeds MAX_IMAGE_SIZE,
-    without first loading the whole file into memory.
+
+async def _read_upload_streaming(image: UploadFile) -> bytes:
+    """Chunked read of the upload, rejecting oversized files on the fly (C3).
+
+    Uses UploadFile.read(size) to read in 64 KB increments and raises HTTP 413
+    as soon as the cumulative size exceeds MAX_IMAGE_SIZE, avoiding a full
+    in-memory buffer before the size check.
+
+    Note: Starlette's UploadFile does not expose a stream() generator; the
+    equivalent chunked API is the async read(size) method.
     """
     chunks: List[bytes] = []
     size = 0
-    async for chunk in image.stream():
+    while True:
+        chunk = await image.read(_UPLOAD_CHUNK)
+        if not chunk:
+            break
         size += len(chunk)
         if size > MAX_IMAGE_SIZE:
             raise HTTPException(
