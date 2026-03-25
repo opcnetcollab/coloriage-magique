@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import type { Difficulty } from "@/lib/api";
 
 interface DifficultyOption {
@@ -8,8 +9,8 @@ interface DifficultyOption {
   label: string;
   description: string;
   range: string;
-  popularBadge?: boolean;    // purple "Populaire" badge
-  a3Badge?: string;          // amber pill badge (e.g. "A3 recommandé")
+  popularBadge?: boolean;
+  a3Badge?: string;
 }
 
 const OPTIONS: DifficultyOption[] = [
@@ -43,112 +44,170 @@ interface DifficultySelectorProps {
   onChange: (difficulty: Difficulty) => void;
 }
 
-export default function DifficultySelector({
-  value,
-  onChange,
-}: DifficultySelectorProps) {
+export default function DifficultySelector({ value, onChange }: DifficultySelectorProps) {
   return (
-    <div
-      className="flex flex-col gap-3"
-      role="radiogroup"
-      aria-label="Niveau de complexité"
-    >
-      <p className="text-sm font-display font-semibold" style={{ color: "#1c1917" }}>
-        Niveau de complexité
-      </p>
+    <LayoutGroup>
+      <div
+        className="flex flex-col gap-3"
+        role="radiogroup"
+        aria-label="Niveau de complexité"
+      >
+        <p
+          className="text-sm font-display font-semibold"
+          style={{ color: "oklch(18% 0.02 60)" }}
+        >
+          Niveau de complexité
+        </p>
 
-      <div className="grid grid-cols-3 gap-3">
-        {OPTIONS.map((opt) => {
-          const isSelected = value === opt.value;
+        <div className="grid grid-cols-3 gap-3">
+          {OPTIONS.map((opt) => {
+            const isSelected = value === opt.value;
 
-          return (
-            <button
-              key={opt.value}
-              type="button"
-              aria-pressed={isSelected}
-              onClick={() => onChange(opt.value)}
-              className={`
-                relative flex flex-col items-center gap-2 rounded-3xl px-3 py-5
-                text-center transition-all duration-200
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500
-                active:scale-[0.97]
-                ${isSelected
-                  ? "border-2 border-amber-500 shadow-amber-lg"
-                  : "border border-amber-200/50 hover:border-amber-400/50 hover:shadow-amber-sm"
-                }
-              `}
-              style={{
-                background: isSelected
-                  ? "linear-gradient(145deg, #fff, #fffbeb)"
-                  : "white",
-                boxShadow: isSelected
-                  ? "0 20px 60px rgba(217,119,6,0.22)"
-                  : "0 8px 40px rgba(49,46,41,0.06)",
-              }}
-            >
-              {/* "Populaire" badge — purple, top-right */}
-              {opt.popularBadge && (
-                <span
-                  className="absolute top-3 right-3 rounded-full px-2 py-0.5 text-[10px] font-display font-bold"
-                  style={{ backgroundColor: "#7c3aed", color: "white" }}
-                >
-                  Populaire
-                </span>
-              )}
-
-              {/* "A3 recommandé" pill — amber, top-center */}
-              {opt.a3Badge && (
-                <span
-                  className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[10px] font-display font-bold whitespace-nowrap shadow-sm"
-                  style={{ backgroundColor: "#d97706", color: "white" }}
-                >
-                  {opt.a3Badge}
-                </span>
-              )}
-
-              {/* Emoji large */}
-              <span className="text-5xl leading-none" aria-hidden="true">
-                {opt.emoji}
-              </span>
-
-              {/* Label */}
-              <span
-                className="font-display font-bold text-base leading-tight"
-                style={{ color: "#1c1917" }}
+            return (
+              <motion.button
+                key={opt.value}
+                type="button"
+                aria-pressed={isSelected}
+                onClick={() => onChange(opt.value)}
+                layout
+                initial={false}
+                animate={{
+                  scale: isSelected ? 1.02 : 1,
+                  y: isSelected ? -2 : 0,
+                }}
+                whileHover={{ scale: isSelected ? 1.02 : 1.01, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="relative flex flex-col items-center gap-2 rounded-3xl px-3 py-5 text-center focus-visible:outline-none overflow-hidden"
+                style={{
+                  background: isSelected
+                    ? "oklch(99% 0.005 80)"
+                    : "oklch(99% 0.005 80)",
+                  border: isSelected
+                    ? "2px solid oklch(75% 0.15 70)"
+                    : "1px solid oklch(85% 0.04 70)",
+                  boxShadow: isSelected
+                    ? "0 0 0 4px oklch(75% 0.15 70 / 0.12), 0 12px 40px oklch(75% 0.15 70 / 0.22)"
+                    : "0 4px 16px oklch(18% 0.02 60 / 0.05)",
+                  cursor: "pointer",
+                }}
               >
-                {opt.label}
-              </span>
+                {/* Selected inner glow */}
+                <AnimatePresence>
+                  {isSelected && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 pointer-events-none rounded-3xl"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse at top, oklch(75% 0.15 70 / 0.08) 0%, transparent 70%)",
+                      }}
+                      aria-hidden
+                    />
+                  )}
+                </AnimatePresence>
 
-              {/* Range badge */}
-              <span
-                className="rounded-full px-2 py-0.5 text-[11px] font-display font-semibold"
-                style={{ backgroundColor: "#fef3c7", color: "#b45309" }}
-              >
-                {opt.range}
-              </span>
+                {/* Shared layout selected indicator */}
+                {isSelected && (
+                  <motion.div
+                    layoutId="difficulty-selected-ring"
+                    className="absolute inset-0 rounded-3xl pointer-events-none"
+                    style={{
+                      border: "2px solid oklch(75% 0.15 70)",
+                      borderRadius: "1.5rem",
+                    }}
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    aria-hidden
+                  />
+                )}
 
-              {/* Description */}
-              <span
-                className="text-xs font-body leading-relaxed"
-                style={{ color: "#5f5b55" }}
-              >
-                {opt.description}
-              </span>
+                {/* "Populaire" badge */}
+                {opt.popularBadge && (
+                  <span
+                    className="absolute top-3 right-3 rounded-full px-2 py-0.5 text-[10px] font-display font-bold z-10"
+                    style={{ backgroundColor: "oklch(45% 0.22 300)", color: "white" }}
+                  >
+                    Populaire
+                  </span>
+                )}
 
-              {/* Selected checkmark badge */}
-              {isSelected && (
-                <span
-                  className="mt-1 rounded-full px-2 py-0.5 text-[10px] font-display font-bold"
-                  style={{ backgroundColor: "#fef3c7", color: "#d97706" }}
+                {/* "A3 recommandé" pill */}
+                {opt.a3Badge && (
+                  <span
+                    className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[10px] font-display font-bold whitespace-nowrap shadow-sm z-10"
+                    style={{ backgroundColor: "oklch(75% 0.15 70)", color: "white" }}
+                  >
+                    {opt.a3Badge}
+                  </span>
+                )}
+
+                {/* Emoji with float animation */}
+                <motion.span
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{
+                    duration: 2.5 + OPTIONS.indexOf(opt) * 0.4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="leading-none z-10"
                   aria-hidden="true"
+                  style={{ fontSize: "3.5rem", display: "inline-block" }}
                 >
-                  ✓ Sélectionné
+                  {opt.emoji}
+                </motion.span>
+
+                {/* Label */}
+                <span
+                  className="font-display font-bold text-base leading-tight z-10"
+                  style={{ color: "oklch(18% 0.02 60)" }}
+                >
+                  {opt.label}
                 </span>
-              )}
-            </button>
-          );
-        })}
+
+                {/* Range badge */}
+                <span
+                  className="rounded-full px-2 py-0.5 text-[11px] font-display font-semibold z-10"
+                  style={{
+                    backgroundColor: "oklch(96% 0.06 80)",
+                    color: "oklch(50% 0.14 70)",
+                  }}
+                >
+                  {opt.range}
+                </span>
+
+                {/* Description */}
+                <span
+                  className="text-xs font-body leading-relaxed z-10"
+                  style={{ color: "oklch(45% 0.02 60)" }}
+                >
+                  {opt.description}
+                </span>
+
+                {/* Selected checkmark */}
+                <AnimatePresence>
+                  {isSelected && (
+                    <motion.span
+                      initial={{ opacity: 0, scale: 0.7 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.7 }}
+                      className="mt-1 rounded-full px-2 py-0.5 text-[10px] font-display font-bold z-10"
+                      style={{
+                        backgroundColor: "oklch(96% 0.06 80)",
+                        color: "oklch(60% 0.12 70)",
+                      }}
+                      aria-hidden="true"
+                    >
+                      ✓ Sélectionné
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </LayoutGroup>
   );
 }
