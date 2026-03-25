@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
+import { Plus_Jakarta_Sans, DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-display",
   display: "swap",
 });
 
-const beVietnamPro = Be_Vietnam_Pro({
+const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-body",
@@ -17,7 +17,7 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Coloriage Magique",
+  title: "Coloriage Magique — Photo → Coloriage imprimable",
   description:
     "Transformez n'importe quelle photo en coloriage imprimable en quelques secondes.",
   openGraph: {
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${plusJakartaSans.variable} ${beVietnamPro.variable} font-body antialiased`}
+        className={`${plusJakarta.variable} ${dmSans.variable} font-body antialiased`}
       >
         {children}
       </body>
