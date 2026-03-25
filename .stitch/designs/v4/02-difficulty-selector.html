@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,800;1,9..144,400&amp;family=Instrument+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#f5f0e8",
+              "tertiary-fixed-dim": "#b6c4ff",
+              "outline": "#8e706c",
+              "on-primary-container": "#ffedea",
+              "tertiary": "#445386",
+              "on-tertiary": "#ffffff",
+              "primary": "#a51f16",
+              "surface-bright": "#fef9f1",
+              "inverse-surface": "#32302b",
+              "on-tertiary-fixed-variant": "#364476",
+              "on-tertiary-fixed": "#051749",
+              "surface-container": "#f2ede5",
+              "on-surface-variant": "#5a413d",
+              "on-secondary": "#ffffff",
+              "on-secondary-fixed-variant": "#594400",
+              "on-secondary-fixed": "#251a00",
+              "background": "#fef9f1",
+              "outline-variant": "#e2beb9",
+              "on-background": "#1d1c17",
+              "secondary-fixed-dim": "#ebc255",
+              "primary-container": "#c8392b",
+              "on-surface": "#1d1c17",
+              "surface-variant": "#e7e2da",
+              "on-error": "#ffffff",
+              "primary-fixed": "#ffdad5",
+              "secondary": "#765b00",
+              "on-tertiary-container": "#eff0ff",
+              "on-secondary-container": "#755900",
+              "secondary-container": "#fdd264",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "surface-dim": "#ded9d2",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#5d6ba0",
+              "on-primary": "#ffffff",
+              "surface-container-high": "#ece8e0",
+              "surface": "#fef9f1",
+              "secondary-fixed": "#ffdf94",
+              "surface-container-lowest": "#ffffff",
+              "on-primary-fixed": "#410000",
+              "on-primary-fixed-variant": "#900d08",
+              "surface-container-low": "#f8f3eb",
+              "inverse-primary": "#ffb4a9",
+              "surface-container-highest": "#e7e2da",
+              "tertiary-fixed": "#dce1ff",
+              "primary-fixed-dim": "#ffb4a9",
+              "surface-tint": "#b3291e"
+            },
+            fontFamily: {
+              "headline": ["Fraunces", "serif"],
+              "body": ["Instrument Sans", "sans-serif"],
+              "label": ["Instrument Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>body {
+    background-image: radial-gradient(circle at 10% 20%, rgba(30, 45, 94, 0.04) 0%, transparent 20%), radial-gradient(circle at 90% 80%, rgba(184, 147, 42, 0.04) 0%, transparent 20%), url(https://lh3.googleusercontent.com/aida-public/AB6AXuDHfmKvUBXJQG2-ufWqKmy6j0y801iKAumAa3bsuo_9AWKGDGIs3HCGEVUOrWeK7AGGNbj_KexKqZvJQwRzj1oIF4iWpALtVSGPAA9PtApeXzrbTjJBjeDLSBnAHjIaZsyNGCT3uwegs3la5v1st134oM-mVYWOTi5a1Nvh2N5RKJdz6781EnP6_DwZIcM_gxbm3Y8-2YkxZC1FLkTvI329JPcx8A5kollJXPFw-owS_Rkqu03LdMKWc8dr8pslyjC1qVdFUJNIy2J4)
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24
+    }
+.double-border {
+    outline: 1px solid rgba(118, 91, 0, 0.2);
+    outline-offset: 3px
+    }
+.ink-shadow {
+    box-shadow: 0 10px 30px -10px rgba(68, 83, 134, 0.2)
+    }</style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar -->
+<header class="bg-[#fef9f1] shadow-[0_2px_10px_-5px_rgba(30,45,94,0.1)] sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-8 py-6 max-w-full mx-auto">
+<div class="text-2xl font-['Fraunces'] font-extrabold text-[#445386] tracking-[-0.04em]">
+                Coloriage Magique
+            </div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#a51f16] font-bold border-b-2 border-[#765b00] pb-1 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[12px]" href="#">Galerie</a>
+<a class="text-[#445386] opacity-80 hover:text-[#765b00] transition-colors duration-400 ease-in-out font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[12px]" href="#">Tarifs</a>
+<button class="text-[#445386] hover:text-[#a51f16] transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</nav>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-8 py-16">
+<!-- Headline Section -->
+<section class="mb-16">
+<div class="flex items-end gap-4 mb-2">
+<div class="w-12 h-[1px] bg-secondary mb-4 opacity-40"></div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary font-bold">Étape 02 / Configuration</span>
+</div>
+<h1 class="font-headline text-[56px] leading-tight font-extrabold text-tertiary tracking-[-0.04em] max-w-2xl">
+                Choisissez votre niveau
+            </h1>
+</section>
+<!-- Difficulty Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20">
+<!-- Débutant Card -->
+<div class="group relative bg-surface-container-low p-10 border border-transparent hover:border-secondary/20 transition-all duration-400 cursor-pointer">
+<div class="flex justify-between items-start mb-12">
+<span class="material-symbols-outlined text-4xl text-secondary/60" data-icon="edit_note">edit_note</span>
+<span class="font-label text-[10px] uppercase tracking-[0.15em] py-1 px-3 bg-surface-container-highest text-tertiary">8 couleurs</span>
+</div>
+<h3 class="font-headline text-3xl text-tertiary mb-4">Débutant</h3>
+<p class="text-on-surface-variant leading-relaxed text-sm">Idéal pour les jeunes enfants. Des zones larges et simples à colorier (10-15 zones).</p>
+<div class="mt-8 pt-8 border-t border-outline-variant/30 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-xs uppercase tracking-widest text-primary font-bold">Sélectionner</span>
+</div>
+</div>
+<!-- Confirmé Card (SELECTED) -->
+<div class="relative bg-surface-container-lowest p-10 border border-secondary ink-shadow ring-1 ring-secondary/50">
+<div class="absolute -top-3 -right-3 bg-secondary text-on-secondary px-4 py-1 text-[10px] uppercase tracking-widest font-bold">Recommandé</div>
+<div class="flex justify-between items-start mb-12">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="brush">brush</span>
+<span class="font-label text-[10px] uppercase tracking-[0.15em] py-1 px-3 bg-secondary text-on-secondary">18 couleurs</span>
+</div>
+<h3 class="font-headline text-3xl text-tertiary mb-4">Confirmé</h3>
+<p class="text-on-surface-variant leading-relaxed text-sm">Le parfait équilibre entre détails et plaisir. Une complexité modérée (25-30 zones).</p>
+<div class="mt-8 pt-8 border-t border-outline-variant/30 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-xs uppercase tracking-widest text-primary font-bold">Niveau Actuel</span>
+</div>
+</div>
+<!-- Expert Card -->
+<div class="group relative bg-surface-container-low p-10 border border-transparent hover:border-secondary/20 transition-all duration-400 cursor-pointer">
+<div class="flex justify-between items-start mb-12">
+<span class="material-symbols-outlined text-4xl text-secondary/60" data-icon="ink_pen">ink_pen</span>
+<span class="font-label text-[10px] uppercase tracking-[0.15em] py-1 px-3 bg-surface-container-highest text-tertiary">35 couleurs</span>
+</div>
+<h3 class="font-headline text-3xl text-tertiary mb-4">Expert</h3>
+<p class="text-on-surface-variant leading-relaxed text-sm">Pour les artistes patients. Des détails d'une finesse extrême pour un rendu photographique.</p>
+<div class="mt-8 pt-8 border-t border-outline-variant/30 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-xs uppercase tracking-widest text-primary font-bold">Sélectionner</span>
+</div>
+</div>
+</div>
+<!-- Preview Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch border-t-2 border-secondary/10 pt-16">
+<div class="space-y-6">
+<span class="font-label text-[10px] uppercase tracking-[0.15em] text-tertiary/60">Source : Photo de famille</span>
+<div class="aspect-square bg-surface-container-highest relative overflow-hidden group">
+<img alt="Family portrait" class="w-full h-full object-cover filter sepia-[0.2] contrast-[1.05]" data-alt="Candid portrait of a smiling family of four in a sunlit autumnal garden, warm golden hour lighting, soft focus foliage background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdO7tl3UFZV47pW5inF8nZIeudPZcPgnOf9NXAze3jJwiyrAEq93IU3i9pcas2_4pQc5VswHRelxz1uud_EaEkBaULcKLKOWw-B5sda1kctE3OLCveneQeiGCE_9eMuZ-ZRkqnlqzLCss6KwgYSJGsExGZIqS9diSMFUCZTzl4EpQVcTt2_952cc52kBp8owJSXkHwgc8sN1S7PyO1ok7-S_ID8jfTLvGlLEEF2mlMQD2hCtbxMP6A66xgtPlEfD3Se41Ou705W7V4"/>
+<div class="absolute inset-0 border-[12px] border-surface-container-lowest/20"></div>
+</div>
+</div>
+<div class="space-y-6 flex flex-col justify-between">
+<div>
+<span class="font-label text-[10px] uppercase tracking-[0.15em] text-tertiary/60">Aperçu : Niveau Confirmé</span>
+<div class="aspect-square bg-white mt-6 relative border border-outline-variant/20 overflow-hidden">
+<img alt="Coloring preview" class="w-full h-full object-cover opacity-80 mix-blend-multiply" data-alt="Abstract line art illustration of a family portrait with numbered zones for coloring, minimalist black lines on white textured paper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBegP9oplagjPS5qEn9CLzMmdVV9eWiehQa_EiElL_TUvIOMZ42ixtmB9Wat_VD3OCCmXXid-kjOy8vl58ix5kk-SPKPP73gobCpPZqwHqIln6oko-iwPwR1LvxzmtcNG1qbPfobSp0Nz7Gtrh9hUDofbbYRdbHOiWqlNrRYVp6o6DtCb6ZisiU85xzaBaPRgmH1vqGeToT6Mnj3m97P0DU2PUu3dsSdZ7AnWji0euabsqMjTc1i5dWdSFIeW0CnZhwvojsFJW5jNCb"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="p-4 bg-surface-container-lowest shadow-lg border border-secondary/20 font-headline text-tertiary italic text-sm">
+                                Analyse des contours en cours...
+                            </div>
+</div>
+</div>
+</div>
+<div class="flex justify-end pt-8">
+<button class="bg-primary text-on-primary px-12 py-5 font-label uppercase tracking-[0.2em] text-sm font-bold shadow-[4px_4px_0px_0px_#765b00] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-200">
+                        Continuer
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-[#fef9f1] border-t-2 border-[#765b00]/20 mt-20">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-10 w-full">
+<div class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] text-[#445386]/60 mb-6 md:mb-0">
+                © 2024 Coloriage Magique. L'Art de l'Instant.
+            </div>
+<div class="flex gap-8">
+<a class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] text-[#445386]/60 hover:text-[#a51f16] transition-colors" href="#">Mentions Légales</a>
+<a class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] text-[#445386]/60 hover:text-[#a51f16] transition-colors" href="#">Confidentialité</a>
+<a class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] text-[#445386]/60 hover:text-[#a51f16] transition-colors" href="#">Conditions</a>
+</div>
+</div>
+</footer>
+</body></html>

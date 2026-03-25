@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,800;1,9..144,400&amp;family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,800;1,6..72,400&amp;family=Manrope:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed": "#410000",
+              "surface-container-high": "#ece8e0",
+              "surface-dim": "#ded9d2",
+              "primary-fixed-dim": "#ffb4a9",
+              "surface-container-low": "#f8f3eb",
+              "background": "#fef9f1",
+              "on-tertiary-fixed": "#051749",
+              "on-primary": "#ffffff",
+              "on-error": "#ffffff",
+              "surface": "#fef9f1",
+              "on-secondary-container": "#755900",
+              "on-tertiary-fixed-variant": "#364476",
+              "on-surface-variant": "#5a413d",
+              "primary-container": "#c8392b",
+              "primary": "#a51f16",
+              "error-container": "#ffdad6",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#b3291e",
+              "secondary-fixed": "#ffdf94",
+              "inverse-on-surface": "#f5f0e8",
+              "surface-container-highest": "#e7e2da",
+              "on-primary-fixed-variant": "#900d08",
+              "tertiary": "#445386",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#b6c4ff",
+              "outline-variant": "#e2beb9",
+              "on-surface": "#1d1c17",
+              "error": "#ba1a1a",
+              "outline": "#8e706c",
+              "on-secondary-fixed": "#251a00",
+              "inverse-primary": "#ffb4a9",
+              "inverse-surface": "#32302b",
+              "surface-container": "#f2ede5",
+              "surface-bright": "#fef9f1",
+              "surface-container-lowest": "#ffffff",
+              "on-background": "#1d1c17",
+              "secondary-fixed-dim": "#ebc255",
+              "tertiary-container": "#5d6ba0",
+              "on-primary-container": "#ffedea",
+              "secondary": "#765b00",
+              "primary-fixed": "#ffdad5",
+              "secondary-container": "#fdd264",
+              "on-secondary-fixed-variant": "#594400",
+              "on-tertiary-container": "#eff0ff",
+              "tertiary-fixed": "#dce1ff",
+              "surface-variant": "#e7e2da",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Fraunces", "serif"],
+              "body": ["Instrument Sans", "sans-serif"],
+              "label": ["Instrument Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>body {
+    background-color: #fef9f1;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAwWXe31AeGkoZIXrx8WqhRsIw29K9sN5bwauIp7Uo_Of-1ypBuNdoSoPi5qW-8FzI6EcCkcGWpmEc4fTMQ6d4rKAHpRANChCJ-CsWZEIqW58MYkoHzOPGJFZ9qTh_NgF_0mrvfja83L2CfhbdkR8yu4dk49fIFtJK7YswB8uypsFYdFiGsD5Y5d6IZoT6b9I-v6kjn72GMIDXe49tVZkX0h8VRUoiFqcihRPWzyk_ycLeQ-3a6I8ZYLK55avxQ6aEqUVYXdXvMUUNK);
+    color: #445386
+    }
+.paper-grain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.05;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCZUVTiuPKuDsB40aSEn2Q51BmfmxMYFpLHB__ZEvZdw9Oq_vkLscx-gB7QAHnyU5c0xoOzIFFKF1ZPJcwusVDHuHvH6AxHpCFvDSmvIUgKKbYaayoDAST6T7i2jZceE0hdhfcjQzrSAVB2FTk1_8PI5M4oX7La6FOkdStHzJZvLvMAYfptTQfypkDOYDZgMpEnQQUua0KgXXNR9IkYT8QH5j-KWE1OlSOfgYasRKMgjwfkOcBJgyjykvKy3wFKtkOuHTMw7FRkiF2U)
+    }
+.bg-texture-number {
+    font-family: "Fraunces", serif;
+    position: absolute;
+    font-weight: 800;
+    color: #445386;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0
+    }
+.prussian-shadow {
+    box-shadow: 0 20px 50px -15px rgba(68, 83, 134, 0.2)
+    }
+.double-border {
+    border: 1px solid rgba(68, 83, 134, 0.3);
+    position: relative;
+    padding: 2px
+    }
+.double-border::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    border: 1px solid rgba(68, 83, 134, 0.3);
+    pointer-events: none
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24
+    }
+.custom-active {
+    border-bottom: 2px solid #765b00;
+    padding-bottom: 0.25rem
+    }</style>
+</head>
+<body class="min-h-screen selection:bg-secondary-container selection:text-on-secondary-container">
+<div class="paper-grain"></div>
+<!-- Background Texture Numbers -->
+<span class="bg-texture-number text-[30rem] -top-20 -left-20">1</span>
+<span class="bg-texture-number text-[20rem] top-[40%] right-[-5%]">2</span>
+<span class="bg-texture-number text-[25rem] bottom-[-10%] left-[10%]">3</span>
+<span class="bg-texture-number text-[15rem] top-[10%] right-[20%]">4</span>
+<!-- Top Navigation -->
+<header class="bg-[#fef9f1] shadow-[0_1px_0_0_rgba(142,112,108,0.1)] relative z-50">
+<div class="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center w-full">
+<a class="text-2xl font-extrabold text-[#445386] font-['Fraunces'] tracking-tighter" href="/">Coloriage Magique</a>
+<nav class="hidden md:flex gap-10 items-center">
+<a class="text-[#a51f16] font-bold border-b-2 border-[#765b00] pb-1 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs" href="#">Le Concept</a>
+<a class="text-[#445386] font-medium hover:text-[#a51f16] transition-colors duration-400 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs" href="#">Galerie</a>
+<a class="text-[#445386] font-medium hover:text-[#a51f16] transition-colors duration-400 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs" href="#">Tarifs</a>
+<a class="text-[#445386] font-medium hover:text-[#a51f16] transition-colors duration-400 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs" href="#">Atelier</a>
+</nav>
+<button class="bg-[#a51f16] text-white px-8 py-3 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs font-bold hover:opacity-80 active:scale-95 transition-all">
+                Commencer
+            </button>
+</div>
+</header>
+<main class="relative z-10">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-8 py-20 md:py-32 grid md:grid-cols-2 gap-16 items-center overflow-hidden">
+<div class="flex flex-col items-start text-left">
+<h1 class="font-['Fraunces'] font-extrabold text-6xl md:text-8xl text-[#445386] leading-[0.9] tracking-tighter mb-8">
+                    Transformez vos photos en pages de coloriage
+                </h1>
+<p class="font-['Fraunces'] text-2xl md:text-3xl text-[#445386]/80 leading-relaxed mb-12 max-w-lg">
+                    L'Atelier Vivant transforme vos souvenirs les plus précieux en œuvres d'art à peindre numéro par numéro.
+                </p>
+<button class="bg-[#a51f16] text-white px-10 py-5 text-sm font-bold uppercase tracking-[0.2em] font-['Instrument_Sans'] shadow-xl hover:shadow-[0_0_20px_rgba(118,91,0,0.3)] transition-all">
+                    Créer mon chef-d'œuvre
+                </button>
+</div>
+<div class="relative group">
+<!-- Asymmetric Image Split -->
+<div class="relative w-full aspect-[4/5] overflow-hidden prussian-shadow border-[12px] border-white">
+<div class="absolute inset-0 grid grid-cols-2">
+<div class="h-full w-full overflow-hidden">
+<img alt="Original Photo" class="h-full w-full object-cover grayscale-[0.2] brightness-90" data-alt="Vintage warm-toned family portrait photograph at a picnic in a sunlit meadow with soft film grain and nostalgic atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfzDN8dvJ3LM8rszDSSJCcJumVMkFm30a3FLSJjwqMNBqCdq1FCxjWE-AgBZ2N-yXlLNkZUP3yyvgqIMli8QKbbIWGtdqFB6dhB7uh53Yus4MRzyvzMksB8TWYBhocAXylQw-6nA0-1WR9cUM2SVV1NgkbBa0B5lbzt0Ndlr8RyvG0KUfg9jq1CiBdZnETHL2XeskPh5j8AUOPO9SKC8ixOK1EUzwxBBQSB6u7I4FBxr0LrzH50UftAsFXlgXL9aliucRXJHoHutIV"/>
+</div>
+<div class="h-full w-full overflow-hidden border-l border-white bg-white">
+<img alt="Coloring Page Outline" class="h-full w-full object-cover" data-alt="Minimalist black and white line art of a family scene, styled like a professional paint-by-numbers template with numbered sections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiGuCByb2fymV1wCYn41UimaG1Ie-m0fPnCcpxLDnVO4NgSLuISFghCG0K8WRl2BQ-iRRgDvupHHXiGf4enY7yvzH8sNGl5fof3jukzGghVLUWNpFcOPJhkwMdc_KsIlR9isMd5z587RqAQlIVNQLbJCUGdIWNlfWcXa9mbzdubr_WV91Rgal0gdCAXlwm3Bl92ltNJbNEcrWpw-Kj3VY_G4vayxo6V54qgu7K7WIRJpJciLAVwaEuIzHXn2aawyKebqMvVh4cVGo2"/>
+</div>
+</div>
+<!-- Decorative corner ornament -->
+<div class="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-[#765b00] m-4 pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-[#765b00] m-4 pointer-events-none"></div>
+</div>
+</div>
+</section>
+<!-- Upload Zone -->
+<section class="max-w-7xl mx-auto px-8 py-24">
+<div class="bg-surface-container-low p-12 md:p-24 relative overflow-hidden">
+<!-- Museum Frame Style -->
+<div class="double-border h-full w-full border-tertiary/20 min-h-[400px] flex flex-col items-center justify-center bg-white/40">
+<!-- Corner Flourishes -->
+<div class="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-[#765b00]"></div>
+<div class="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-[#765b00]"></div>
+<div class="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-[#765b00]"></div>
+<div class="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-[#765b00]"></div>
+<div class="max-w-md w-full border-2 border-dashed border-[#445386]/30 p-12 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-6xl text-[#765b00] mb-6">palette</span>
+<h3 class="font-['Fraunces'] text-2xl font-bold text-[#445386] mb-4">Déposez votre souvenir ici</h3>
+<p class="font-['Instrument_Sans'] text-[#445386]/60 mb-8 leading-relaxed">
+                            Formats acceptés : JPG, PNG. Taille maximale 10Mo.<br/>
+                            Pour un résultat optimal, choisissez une photo lumineuse.
+                        </p>
+<button class="bg-[#445386] text-white px-8 py-4 font-bold uppercase tracking-widest text-xs hover:bg-[#a51f16] transition-colors">
+                            Parcourir mes photos
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="max-w-7xl mx-auto px-8 py-24">
+<div class="grid md:grid-cols-3 gap-12">
+<div class="md:col-span-2 space-y-12">
+<div class="bg-white p-12 prussian-shadow border-l-4 border-[#765b00]">
+<span class="font-['Fraunces'] italic text-secondary mb-4 block text-lg">01. Algorithme Artistique</span>
+<h4 class="font-['Fraunces'] text-3xl font-extrabold text-[#445386] mb-6 tracking-tight">Précision Artisanale</h4>
+<p class="font-['Instrument_Sans'] text-lg leading-relaxed text-[#445386]/80">
+                            Contrairement aux filtres génériques, notre intelligence artificielle analyse les contrastes et les teintes pour créer des zones de couleurs qui respectent l'émotion de l'image originale.
+                        </p>
+</div>
+<div class="grid grid-cols-2 gap-12">
+<div class="bg-[#e7e2da] p-8 aspect-square flex flex-col justify-end">
+<span class="material-symbols-outlined text-4xl text-[#a51f16] mb-auto">print</span>
+<h5 class="font-['Fraunces'] text-xl font-bold text-[#445386]">Prêt à Imprimer</h5>
+<p class="font-['Instrument_Sans'] text-sm mt-2 text-[#445386]/70 uppercase tracking-wider">Format A4 ou A3 Haute Résolution</p>
+</div>
+<div class="bg-white border border-[#765b00]/10 p-8 aspect-square flex flex-col justify-end prussian-shadow">
+<span class="material-symbols-outlined text-4xl text-[#765b00] mb-auto">ink_highlighter</span>
+<h5 class="font-['Fraunces'] text-xl font-bold text-[#445386]">Palette Personnalisée</h5>
+<p class="font-['Instrument_Sans'] text-sm mt-2 text-[#445386]/70 uppercase tracking-wider">Génération de guide de mélanges</p>
+</div>
+</div>
+</div>
+<div class="bg-[#445386] text-white p-12 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[12rem] rotate-12">auto_fix_high</span>
+</div>
+<div>
+<h4 class="font-['Fraunces'] text-4xl font-extrabold mb-8 leading-tight">L'Expérience de l'Atelier</h4>
+<p class="font-['Instrument_Sans'] text-lg opacity-80 leading-relaxed mb-8">
+                            Une activité méditative pour petits et grands. Transformez le temps d'écran en temps de création.
+                        </p>
+</div>
+<ul class="space-y-4 font-['Instrument_Sans'] text-sm uppercase tracking-widest font-bold">
+<li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-[#765b00]"></span> Guide de couleurs inclus</li>
+<li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-[#765b00]"></span> Téléchargement instantané</li>
+<li class="flex items-center gap-3"><span class="w-1.5 h-1.5 bg-[#765b00]"></span> Support premium 24/7</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Gallery Teaser -->
+<section class="max-w-7xl mx-auto px-8 py-24 border-t-2 border-[#765b00]/10">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div class="max-w-2xl">
+<h2 class="font-['Fraunces'] text-5xl font-extrabold text-[#445386] mb-6">Inspiration de la Galerie</h2>
+<p class="font-['Fraunces'] text-xl text-[#445386]/70">Découvrez ce que d'autres familles ont créé à partir de leurs souvenirs.</p>
+</div>
+<a class="text-[#765b00] font-bold uppercase tracking-widest text-sm border-b border-[#765b00] pb-2 hover:text-[#a51f16] hover:border-[#a51f16] transition-colors" href="#">
+                    Voir toute la galerie
+                </a>
+</div>
+<div class="grid md:grid-cols-4 gap-4">
+<div class="aspect-[3/4] overflow-hidden">
+<img alt="Gallery item 1" class="h-full w-full object-cover grayscale brightness-110 hover:grayscale-0 transition-all duration-700 cursor-pointer" data-alt="Artistic macro shot of colorful watercolor paints in small circular wells on a white paper texture background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQWv1j5M-8Iy60L98kZXL0M0f-lHZLcUfJ0o7JNoeRNqr5C80HqroFp8TuIOc0ocQfQFiuopycob-Qc_R3Qhw8jIjOmfo0ixOeBPntTLLV4oWq_67Y2tGaltgt8CaFDoQcB62DWBCtdYU_QFkRkdmpBkIZaMLl4HWa40kLYVRvgA-i6WxychmuzGWyafXJy5bfaQBDjiIGB9rXewT9dblvdqCExZuWeyLIcDye6Aeq60cjNLQZ0WNZoo5XU51Ltc3gC_uQF7G0iift"/>
+</div>
+<div class="aspect-[3/4] overflow-hidden mt-8 md:mt-16">
+<img alt="Gallery item 2" class="h-full w-full object-cover grayscale brightness-110 hover:grayscale-0 transition-all duration-700 cursor-pointer" data-alt="Dreamy portrait of a young child smiling, captured in high-contrast black and white photography, perfect for coloring conversions" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4KsXDZTXEdvtiWpY9Jy3YAI6etbABvAojK1BeBYDoJVx-6CYmI-OiCIptZJXS4yaLjcTQPGXtJoEoQekvYLDf1ORuzTDv5wBx3eHsGHS6M2BzVDB1wTVqddS6tcMhYYbT2l1kfZ-8cEkh-sVCi0Wmcj3y0HpTQ9rW-oLMiF9xbRBBcfVicZjn7Q-OVLdu1j6vaeS4xXf2vZPxT6boWlcRi-0RqfDBDg8ggxTWRK4Z1IUee_vwzVjbtsSSaAXkW2CWysVmK17JgjVF"/>
+</div>
+<div class="aspect-[3/4] overflow-hidden">
+<img alt="Gallery item 3" class="h-full w-full object-cover grayscale brightness-110 hover:grayscale-0 transition-all duration-700 cursor-pointer" data-alt="Rustic wooden table with a paint-by-numbers canvas spread out next to a glass of red wine and paint brushes in a cozy atelier" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0spkenwKihLGhyGGEkMe45q-FJtVfTzHT7YuhL7fyeACiFO_8J6PZ4QBB14Bd-HYFUxl3uUoTnOie5D5VH7n5J_0TU6_5ql-j4i-zeCqZ456wOhAtlmEnmoom1SEtLf4ZV56fH9aVAc3nsTfTDi3jI4gJ6nOupl4iwWxB56iSaDhy5P_qAvqrCDCgZtRsw1RE5Vxs52DVtWoLSCvXqpQe-VgPj1Rqy-LUuxP3rYnP116YIo6kuW6K9VUdu4GqK6KwY2s1e7ZcJPRz"/>
+</div>
+<div class="aspect-[3/4] overflow-hidden mt-8 md:mt-16">
+<img alt="Gallery item 4" class="h-full w-full object-cover grayscale brightness-110 hover:grayscale-0 transition-all duration-700 cursor-pointer" data-alt="Atmospheric landscape of misty mountains and forests at dawn, rendered with sharp edges and clear defined light and shadow zones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHj7EP1rVZvyVLDM928xIVZtntQ5CxM6xm29fFuX_M1KfyWLGAMeItgu9Hzrr40gqq_8c5LJcRjQiMIFMrgyD2HIfAaRuxRO5hzTaYjCvg5cqcCVvwvZysjbY4oao-MsKgRHzPAFyVn9d9DwdpS3zfzaUS89gFMYoHQz2rTC5AKdrbaMEiKQ0zspgrv4G1taPNjSy1OsCj1Gn16ApIyySgemU24ejYqI_e1UBQZedknGfYInHlNiVictWqArzikYOGuN8FQV2eDgmD"/>
+</div>
+</div>
+</section>
+<!-- CTA Final -->
+<section class="max-w-4xl mx-auto px-8 py-32 text-center">
+<h2 class="font-['Fraunces'] text-5xl md:text-7xl font-extrabold text-[#445386] mb-8 leading-[0.9]">Prêt à donner vie à vos images ?</h2>
+<p class="font-['Fraunces'] text-2xl text-[#445386]/60 mb-12">Rejoignez l'Atelier dès aujourd'hui et recevez votre première page de coloriage.</p>
+<div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+<button class="w-full md:w-auto bg-[#a51f16] text-white px-12 py-6 font-bold uppercase tracking-[0.2em] font-['Instrument_Sans']">
+                    Commencer l'Atelier
+                </button>
+<span class="font-['Fraunces'] italic text-[#765b00]">ou</span>
+<button class="w-full md:w-auto bg-transparent text-[#445386] border-2 border-[#765b00] px-12 py-6 font-bold uppercase tracking-[0.2em] font-['Instrument_Sans'] hover:bg-[#765b00]/5">
+                    Voir les Tarifs
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#e7e2da] border-t-2 border-[#765b00]/10 py-24 relative z-50">
+<div class="max-w-7xl mx-auto px-12 w-full flex flex-col md:flex-row justify-between items-center gap-12">
+<div class="text-center md:text-left">
+<p class="text-[#445386] font-bold text-xl font-['Fraunces'] mb-2">Coloriage Magique</p>
+<p class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs text-[#445386]/70">© 2024 Coloriage Magique. L'Atelier Vivant.</p>
+</div>
+<nav class="flex flex-wrap justify-center gap-8">
+<a class="text-[#445386]/70 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs hover:text-[#765b00] underline-offset-4 underline transition-all duration-400" href="#">Mentions Légales</a>
+<a class="text-[#445386]/70 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs hover:text-[#765b00] underline-offset-4 underline transition-all duration-400" href="#">Confidentialité</a>
+<a class="text-[#445386]/70 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs hover:text-[#765b00] underline-offset-4 underline transition-all duration-400" href="#">Contact</a>
+<a class="text-[#445386]/70 font-['Instrument_Sans'] uppercase tracking-[0.15em] text-xs hover:text-[#765b00] underline-offset-4 underline transition-all duration-400" href="#">Instagram</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-[#765b00] flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">brush</span>
+</div>
+<span class="text-[#765b00] font-['Fraunces'] font-bold italic">L'art de la patience.</span>
+</div>
+</div>
+</footer>
+<!-- Progress Scroll Line -->
+<div class="fixed bottom-0 left-0 h-1 bg-[#765b00]/20 w-full z-[100]">
+<div class="h-full bg-[#765b00]" style="width: 35%;"></div>
+</div>
+</body></html>

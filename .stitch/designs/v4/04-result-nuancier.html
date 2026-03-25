@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,800;1,9..144,800&amp;family=Instrument+Sans:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-surface-variant": "#5a413d",
+          "tertiary-fixed": "#dce1ff",
+          "surface-container-high": "#ece8e0",
+          "tertiary": "#445386",
+          "outline": "#8e706c",
+          "primary-fixed": "#ffdad5",
+          "inverse-primary": "#ffb4a9",
+          "tertiary-fixed-dim": "#b6c4ff",
+          "surface-container": "#f2ede5",
+          "surface-bright": "#fef9f1",
+          "primary-fixed-dim": "#ffb4a9",
+          "tertiary-container": "#5d6ba0",
+          "surface-container-lowest": "#ffffff",
+          "secondary-fixed": "#ffdf94",
+          "on-tertiary-fixed-variant": "#364476",
+          "surface-container-highest": "#e7e2da",
+          "on-tertiary-container": "#eff0ff",
+          "on-primary": "#ffffff",
+          "on-error": "#ffffff",
+          "on-background": "#1d1c17",
+          "inverse-surface": "#32302b",
+          "on-primary-container": "#ffedea",
+          "on-surface": "#1d1c17",
+          "background": "#fef9f1",
+          "secondary": "#765b00",
+          "primary": "#a51f16",
+          "surface-tint": "#b3291e",
+          "on-tertiary-fixed": "#051749",
+          "on-primary-fixed": "#410000",
+          "primary-container": "#c8392b",
+          "error-container": "#ffdad6",
+          "on-secondary-fixed-variant": "#594400",
+          "on-secondary-fixed": "#251a00",
+          "error": "#ba1a1a",
+          "on-primary-fixed-variant": "#900d08",
+          "on-error-container": "#93000a",
+          "surface-variant": "#e7e2da",
+          "secondary-fixed-dim": "#ebc255",
+          "on-secondary": "#ffffff",
+          "outline-variant": "#e2beb9",
+          "secondary-container": "#fdd264",
+          "surface-dim": "#ded9d2",
+          "surface": "#fef9f1",
+          "on-secondary-container": "#755900",
+          "on-tertiary": "#ffffff",
+          "inverse-on-surface": "#f5f0e8",
+          "surface-container-low": "#f8f3eb"
+        },
+        fontFamily: {
+          "headline": ["Fraunces", "serif"],
+          "body": ["Instrument Sans", "sans-serif"],
+          "label": ["Instrument Sans", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .paper-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+        }
+        .double-border {
+            outline: 1px solid rgba(118, 91, 0, 0.2);
+            outline-offset: 4px;
+            border: 1px solid rgba(118, 91, 0, 0.2);
+        }
+        .swatch-inner-shadow {
+            box-shadow: inset 0 2px 4px rgba(30, 45, 94, 0.2);
+        }
+        .prussian-shadow {
+            box-shadow: 0 10px 30px -10px rgba(30, 45, 94, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-surface text-tertiary font-body selection:bg-secondary/30 min-h-screen flex flex-col paper-grain">
+<!-- Top Navigation Anchor -->
+<header class="docked full-width top-0 z-50 bg-[#fef9f1] border-b-2 border-double border-[#765b00]/20 shadow-[0_10px_30px_-10px_rgba(30,45,94,0.15)]">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto">
+<h1 class="text-2xl font-black text-[#445386] tracking-[-0.04em] font-headline italic">Bibliophile Enchanté</h1>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#445386]/70 font-label uppercase tracking-[0.15em] text-xs hover:text-[#a51f16] transition-colors duration-400" href="#">Gallery</a>
+<a class="text-[#a51f16] border-b-2 border-[#a51f16] pb-1 font-label uppercase tracking-[0.15em] text-xs" href="#">Studio</a>
+<a class="text-[#445386]/70 font-label uppercase tracking-[0.15em] text-xs hover:text-[#a51f16] transition-colors duration-400" href="#">Archives</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-tertiary hover:text-primary transition-colors">share</button>
+<button class="material-symbols-outlined text-tertiary hover:text-primary transition-colors">download</button>
+</div>
+</div>
+</header>
+<main class="flex-grow max-w-screen-2xl mx-auto px-8 py-12 w-full">
+<!-- Congratulatory Moment -->
+<div class="mb-16">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary scale-75" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-secondary">Chef-d'œuvre achevé</span>
+</div>
+<h2 class="font-headline font-extrabold text-5xl md:text-6xl text-tertiary tracking-tighter italic mb-4">Votre chef-d'œuvre est prêt!</h2>
+<p class="font-body text-tertiary/70 text-lg">18 zones de couleur — <span class="font-bold">Niveau Confirmé</span></p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-10 gap-16 items-start">
+<!-- Left Column: The Artwork (60%) -->
+<div class="lg:col-span-6 relative group">
+<!-- Corner Flourishes -->
+<div class="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-secondary z-10"></div>
+<div class="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-secondary z-10"></div>
+<div class="double-border bg-surface-container-lowest p-1 prussian-shadow">
+<div class="border border-tertiary/10">
+<img class="w-full aspect-[3/4] object-cover grayscale opacity-90 contrast-125" data-alt="Intricate line-art coloring page of a vintage Parisian bookstore facade with numbered zones for coloring, high detail, prussian blue outlines on ivory paper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu_6TeTXjzOvCaVxRzzpsbNUQr_VDV5B6VsIe7WSo8w-0qRFtJnVk4F-foJ1b4eaOZRRn0xvA5RDbtXliEDjXWyfCQyierfrjPtmShKvUkPQ0dhsSM2KMymHO7uJpe9e2OWPS55Jx47q6EmpLdOV15cftoK3g8C_8iKpnUmf8uPmZPYHIxt-AQQm1pEM3ck3qh2t3ZEoEmNG3vUSXBEorv9fNiiWzLXsSGQj0EF1jLQgunNuo0TlASH388AVngVtB3IU8JoE4OXcSt"/>
+</div>
+</div>
+<div class="mt-6 flex justify-between items-baseline">
+<span class="font-label text-[10px] uppercase tracking-[0.15em] text-tertiary/40">votre coloriage numéroté</span>
+<span class="font-headline text-tertiary/20 italic text-4xl">No. 0842</span>
+</div>
+</div>
+<!-- Right Column: The Palette (40%) -->
+<div class="lg:col-span-4 lg:pl-8">
+<div class="sticky top-32">
+<h3 class="font-headline text-3xl text-tertiary mb-12">Votre palette</h3>
+<!-- Watercolor Palette Shape (Simulated with irregular flex) -->
+<div class="relative min-h-[400px]">
+<div class="flex flex-wrap gap-6 justify-start items-center">
+<!-- Palette Swatches: 18 elements -->
+<!-- Row 1 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-[#a51f16] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">01</span>
+</div>
+<div class="flex flex-col items-center gap-2 -mt-4">
+<div class="w-14 h-14 rounded-full bg-[#c8392b] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">02</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-[#765b00] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">03</span>
+</div>
+<div class="flex flex-col items-center gap-2 mt-4">
+<div class="w-14 h-14 rounded-full bg-[#b8932a] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">04</span>
+</div>
+<!-- Row 2 -->
+<div class="flex flex-col items-center gap-2 ml-4">
+<div class="w-14 h-14 rounded-full bg-[#445386] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">05</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-[#5d6ba0] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">06</span>
+</div>
+<div class="flex flex-col items-center gap-2 -mt-2">
+<div class="w-14 h-14 rounded-full bg-[#2d4d3d] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">07</span>
+</div>
+<!-- Row 3 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-[#4a6343] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">08</span>
+</div>
+<div class="flex flex-col items-center gap-2 mt-6">
+<div class="w-14 h-14 rounded-full bg-[#8b4513] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">09</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-[#d2b48c] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">10</span>
+</div>
+<!-- Row 4 -->
+<div class="flex flex-col items-center gap-2 ml-8">
+<div class="w-14 h-14 rounded-full bg-[#93000a] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">11</span>
+</div>
+<div class="flex flex-col items-center gap-2 -mt-4">
+<div class="w-14 h-14 rounded-full bg-[#5a413d] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">12</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-[#364476] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">13</span>
+</div>
+<div class="flex flex-col items-center gap-2 mt-2">
+<div class="w-14 h-14 rounded-full bg-[#8e706c] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">14</span>
+</div>
+<!-- Row 5 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-[#251a00] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">15</span>
+</div>
+<div class="flex flex-col items-center gap-2 ml-4">
+<div class="w-14 h-14 rounded-full bg-[#e2beb9] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">16</span>
+</div>
+<div class="flex flex-col items-center gap-2 -mt-6">
+<div class="w-14 h-14 rounded-full bg-[#fdd264] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">17</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-14 h-14 rounded-full bg-[#b6c4ff] swatch-inner-shadow border-2 border-white/20"></div>
+<span class="font-label text-[10px] text-tertiary/60">18</span>
+</div>
+</div>
+</div>
+<!-- Palette Legend -->
+<div class="mt-12 border-t border-secondary/10 pt-6">
+<div class="grid grid-cols-2 gap-y-3 gap-x-8">
+<div class="flex items-center gap-2">
+<span class="font-bold text-xs text-secondary">01</span>
+<span class="text-[10px] uppercase tracking-wider text-tertiary/70 font-label">Cramoisi Ancien</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-xs text-secondary">05</span>
+<span class="text-[10px] uppercase tracking-wider text-tertiary/70 font-label">Bleu de Prusse</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-xs text-secondary">03</span>
+<span class="text-[10px] uppercase tracking-wider text-tertiary/70 font-label">Or Vieilli</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-xs text-secondary">07</span>
+<span class="text-[10px] uppercase tracking-wider text-tertiary/70 font-label">Vert Forêt</span>
+</div>
+</div>
+</div>
+<!-- Social Proof -->
+<div class="mt-12 flex flex-col gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="ml-2 font-label text-[10px] tracking-widest text-tertiary/50">4.9/5 PAR LES ARTISTES</span>
+</div>
+<a class="text-tertiary hover:text-primary underline decoration-double underline-offset-4 text-xs font-label tracking-widest uppercase" href="#">Partager ce coloriage</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="mt-24 border-t-2 border-double border-secondary/20 pt-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+<button class="w-full md:w-auto px-10 py-5 bg-primary text-white font-label uppercase tracking-[0.2em] text-sm hover:bg-primary-container transition-all duration-400 active:scale-95 prussian-shadow">
+                Télécharger en PDF
+            </button>
+<button class="w-full md:w-auto px-10 py-[18px] border-double border-2 border-secondary text-tertiary font-label uppercase tracking-[0.2em] text-sm hover:bg-secondary/5 transition-all duration-400 active:scale-95">
+                Imprimer
+            </button>
+<a class="font-label uppercase tracking-[0.2em] text-xs text-tertiary hover:text-primary transition-colors py-2 border-b border-transparent hover:border-primary" href="#">
+                Recommencer
+            </a>
+</div>
+</main>
+<!-- Footer Anchor -->
+<footer class="w-full py-12 mt-auto border-t border-[#765b00]/10 bg-[#fef9f1]">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 max-w-7xl mx-auto gap-4">
+<p class="font-label text-[10px] uppercase tracking-[0.15em] text-[#445386]/50">© 2024 Bibliophile Enchanté. Hand-pressed digital pigments.</p>
+<div class="flex gap-8">
+<a class="font-label text-[10px] uppercase tracking-[0.15em] text-[#445386]/50 hover:text-[#765b00] underline decoration-double" href="#">Terms of Artistry</a>
+<a class="font-label text-[10px] uppercase tracking-[0.15em] text-[#445386]/50 hover:text-[#765b00] underline decoration-double" href="#">Privacy Folio</a>
+<a class="font-label text-[10px] uppercase tracking-[0.15em] text-[#445386]/50 hover:text-[#765b00] underline decoration-double" href="#">Provenance</a>
+</div>
+</div>
+</footer>
+</body></html>

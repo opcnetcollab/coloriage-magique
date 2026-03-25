@@ -1,0 +1,13 @@
+14899825859497664615
+
+# Screens
+01 Landing/Upload      : bae16d4df5874021bc7a1419d982960d
+02 Difficulty Selector : abcd7f09a2b9477ca2e963ab37381ba9
+03 Processing          : feef86ae971f4c8bb81d0503cf68119d
+04 Result + Nuancier   : 25aae7ba7594475bb67c7aec28f6c92c
+
+# Design System
+Asset ID               : fb5a8bd3aa2241e1b9d527f99e5644ba
+Name                   : Bibliophile Enchanté
+
+# Model used: GEMINI_3_1_PRO (all screens)
