@@ -2,13 +2,9 @@ version: "3.9"
 
 services:
   api:
-    build:
-      context: apps/api
-      dockerfile: Dockerfile
+    image: ghcr.io/opcnetcollab/coloriage-magique-api:latest
     container_name: coloriage-api
     restart: unless-stopped
-    ports:
-      - "8000:8000"
     volumes:
       - jobs_data:/tmp/coloriage-jobs
     environment:
@@ -18,18 +14,12 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 10s
+      start_period: 15s
 
   web:
-    build:
-      context: apps/web
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: https://coloriage-magique.srv1465877.hstgr.cloud
+    image: ghcr.io/opcnetcollab/coloriage-magique-web:latest
     container_name: coloriage-web
     restart: unless-stopped
-    ports:
-      - "3000:3000"
     environment:
       - NODE_ENV=production
     depends_on:
@@ -42,11 +32,32 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - api
       - web
+    command: >
+      sh -c "cat > /etc/nginx/conf.d/default.conf << 'NGINX_EOF'
+      server {
+        listen 80;
+        server_name _;
+
+        location /api/ {
+          proxy_pass http://coloriage-api:8000;
+          proxy_set_header Host $$host;
+          proxy_set_header X-Real-IP $$remote_addr;
+          proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
+          client_max_body_size 25M;
+        }
+
+        location / {
+          proxy_pass http://coloriage-web:3000;
+          proxy_set_header Host $$host;
+          proxy_set_header X-Real-IP $$remote_addr;
+          proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
+        }
+      }
+      NGINX_EOF
+      nginx -g 'daemon off;'"
 
 volumes:
   jobs_data:
