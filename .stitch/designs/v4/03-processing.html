@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,800&amp;family=Instrument+Sans:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#93000a",
+              "surface": "#fef9f1",
+              "secondary-fixed-dim": "#ebc255",
+              "on-tertiary-fixed": "#051749",
+              "surface-container-highest": "#e7e2da",
+              "primary": "#a51f16",
+              "secondary-container": "#fdd264",
+              "surface-container-high": "#ece8e0",
+              "on-secondary-container": "#755900",
+              "on-secondary-fixed": "#251a00",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "on-surface-variant": "#5a413d",
+              "primary-fixed": "#ffdad5",
+              "surface-dim": "#ded9d2",
+              "on-primary-fixed": "#410000",
+              "on-primary-container": "#ffedea",
+              "on-tertiary-container": "#eff0ff",
+              "on-primary-fixed-variant": "#900d08",
+              "surface-container-low": "#f8f3eb",
+              "outline": "#8e706c",
+              "inverse-on-surface": "#f5f0e8",
+              "on-background": "#1d1c17",
+              "surface-bright": "#fef9f1",
+              "tertiary-container": "#5d6ba0",
+              "tertiary": "#445386",
+              "on-secondary": "#ffffff",
+              "inverse-primary": "#ffb4a9",
+              "inverse-surface": "#32302b",
+              "tertiary-fixed-dim": "#b6c4ff",
+              "tertiary-fixed": "#dce1ff",
+              "on-error": "#ffffff",
+              "on-surface": "#1d1c17",
+              "surface-variant": "#e7e2da",
+              "on-secondary-fixed-variant": "#594400",
+              "surface-tint": "#b3291e",
+              "surface-container": "#f2ede5",
+              "secondary-fixed": "#ffdf94",
+              "outline-variant": "#e2beb9",
+              "primary-fixed-dim": "#ffb4a9",
+              "secondary": "#765b00",
+              "primary-container": "#c8392b",
+              "error": "#ba1a1a",
+              "on-tertiary-fixed-variant": "#364476",
+              "on-primary": "#ffffff",
+              "background": "#fef9f1"
+            },
+            fontFamily: {
+              "headline": ["Fraunces", "serif"],
+              "body": ["Instrument Sans", "sans-serif"],
+              "label": ["Instrument Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24
+    }
+.paper-texture {
+    background-color: #fef9f1;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAzX85_W3p63CxaM0hYhdcAVchBXfPM9kfrDocQqHGqTdhFIkn2La5ImGTgQ5JKl_d850DHG72VvMw22-lLOgwKBaymmuIW5Wu4MHp8x5EmfMrvqRY2ah18JM8HroDLRgS7gRVp6xbF2wj4g1zO8B3tjGvQEttZRQbwFPMbSFDH_pdDIDbWBQR6dbY2EaH7MaBHQ-WVRgnD4b9aguKOUKr3OSw-94HCofcXgO0xaYC1cB22Y0t0o5uOPNQwR3w4EkgIx0VyWsG0rAcr);
+    position: relative
+    }
+.ink-outline-draw {
+    border-right: 2px solid #445386;
+    animation: draw 4s infinite ease-in-out
+    }
+.asymmetric-layout {
+    padding-left: 12%;
+    padding-right: 8%
+    }
+.prussian-shadow {
+    box-shadow: 0 20px 50px -15px rgba(68, 83, 134, 0.12)
+    }
+.double-border {
+    border: 1px solid rgba(118, 91, 0, 0.2);
+    padding: 3px;
+    position: relative
+    }
+.double-border::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border: 1px solid rgba(118, 91, 0, 0.1);
+    pointer-events: none
+    }</style>
+</head>
+<body class="bg-surface font-body text-tertiary paper-texture min-h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation Anchor (As per Shared Components) -->
+<header class="flex justify-between items-center w-full px-8 py-4 max-w-none bg-[#fef9f1] dark:bg-stone-900 z-50">
+<div class="text-2xl font-extrabold tracking-tighter text-[#a51f16] dark:text-[#c8392b] font-['Fraunces']">
+            Bibliophile Enchanté
+        </div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6 items-center">
+<a class="text-[#445386] dark:text-stone-400 font-medium font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] hover:text-[#a51f16] transition-colors duration-400" href="#">Gallery</a>
+<a class="text-[#445386] dark:text-stone-400 font-medium font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] hover:text-[#a51f16] transition-colors duration-400" href="#">Studio</a>
+<a class="text-[#445386] dark:text-stone-400 font-medium font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] hover:text-[#a51f16] transition-colors duration-400" href="#">Archives</a>
+</nav>
+<div class="flex items-center gap-4 text-[#a51f16] dark:text-[#c8392b]">
+<span class="material-symbols-outlined cursor-pointer" data-icon="settings">settings</span>
+<span class="material-symbols-outlined cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<div class="bg-[#e7e2da] dark:bg-stone-800 h-[2px] w-full"></div>
+<main class="flex-grow flex flex-col items-center justify-center py-12 px-6">
+<!-- Headline Section -->
+<div class="text-center mb-12 max-w-3xl">
+<h1 class="font-headline font-extrabold text-5xl md:text-6xl text-tertiary tracking-[-0.04em] mb-4">
+                Votre coloriage prend vie...
+            </h1>
+<p class="font-headline text-xl md:text-2xl text-tertiary opacity-80 italic">
+                La magie opère — votre photo se transforme en chef-d’œuvre.
+            </p>
+</div>
+<!-- Central Magic Canvas -->
+<div class="relative w-full max-w-5xl aspect-[16/9] bg-white prussian-shadow double-border flex overflow-hidden">
+<!-- Left: User Photo (Original) -->
+<div class="relative w-1/2 h-full overflow-hidden border-r border-tertiary/10">
+<img class="absolute inset-0 w-full h-full object-cover opacity-40" data-alt="Warm family portrait of four people laughing in a sun-drenched field at sunset, soft film grain, nostalgic golden lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq7ePSuHWYR0ssyqZXXRPmC3PmVmCvDrLeEC8yjS5gtt8wlK3Uwa3Rw-8mdA1tLWEL1df21g2Qlpsy1PS9v3UG5ieSkwwVhagqqrobS6XTHzg1nTPsiJJuBCg0mhnkISfs1wnvJSIjoO4HOpfTXhSXax_RMZeaBykO_JTuZIHNn4yyqh7TDGthbHDri0x7ynCeL2qtQ2PyzcDgEVfdpSXgDL74_tEH-qIl5VKgif5n_va-tvVZ8XsAkU4O2wseAQhZSjECc4RI0cih"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface/20 to-transparent"></div>
+</div>
+<!-- Right: Emerging Artwork (Coloring Page) -->
+<div class="relative w-1/2 h-full bg-surface-container-lowest flex items-center justify-center">
+<!-- Animated Ink Drawing Overlay -->
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+<!-- Texture/Pattern -->
+<div class="w-full h-full opacity-10" style="background-image: radial-gradient(#445386 0.5px, transparent 0.5px); background-size: 20px 20px;"></div>
+</div>
+<img class="w-full h-full object-cover opacity-80" data-alt="Intricate black ink line drawing of a family portrait with thin numbered sections, delicate linework on ivory paper background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiZ7LfaimbOQNliV-pBBmzpp6vNOvcvJiurwm6t3rFBZdjoLogiUdVb7CRBq11bZRplF-kND88na_a1zmRlfe009XP_b4DojojzCVfNC8FZzaaHG8XY1mHcrxMzO6n3w76jQgtvWi2gGtOz89AepM50NpvkfKhnkMSSu-Hfc0KQQoX6Y5TK1nxn_wEfwIToHyW0UL93r8T-hYOWwu-1TiYQqvboXP781IBHYdbCkDejFszKAZC39rE6rg5ucVpGTWB30ZdOi4o8xFD"/>
+<!-- Magic Drawing Line (The Split Point Indicator) -->
+<div class="absolute top-0 left-0 bottom-0 w-[1px] bg-tertiary/40"></div>
+<div class="absolute top-0 left-0 h-full w-[1px] bg-tertiary z-10" style="box-shadow: 0 0 15px rgba(68, 83, 134, 0.4);"></div>
+</div>
+<!-- Corner Flourishes -->
+<div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-secondary/40"></div>
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-secondary/40"></div>
+<!-- Progress Indicator Overlay -->
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 w-[80%] z-20">
+<div class="relative h-px bg-secondary/30 mb-2 flex justify-between px-1">
+<span class="font-headline text-[10px] text-secondary -mt-4">0</span>
+<span class="font-headline text-[10px] text-secondary -mt-4">25</span>
+<span class="font-headline text-[10px] text-secondary -mt-4">50</span>
+<span class="font-headline text-[10px] text-secondary -mt-4">75</span>
+<span class="font-headline text-[10px] text-secondary -mt-4">100</span>
+</div>
+<!-- Animated Gold Progress Line -->
+<div class="absolute bottom-2 left-0 h-[2px] bg-secondary w-[40%] transition-all duration-1000 ease-in-out">
+<!-- Pen Nib Icon -->
+<div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 text-tertiary">
+<span class="material-symbols-outlined text-xl" style="transform: rotate(45deg);">edit</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Rotating Tips Section -->
+<div class="mt-16 w-full max-w-2xl">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8 opacity-90">
+<!-- Tip 1 -->
+<div class="flex flex-col items-center text-center max-w-[200px]">
+<div class="w-12 h-12 flex items-center justify-center text-primary mb-3">
+<span class="material-symbols-outlined text-3xl" data-icon="edit">edit</span>
+</div>
+<span class="font-label uppercase tracking-[0.15em] text-[11px] font-semibold text-tertiary mb-1">Étape I</span>
+<p class="font-headline italic text-tertiary">Affûtez vos crayons</p>
+</div>
+<!-- Tip 2 (Active/Focus) -->
+<div class="flex flex-col items-center text-center max-w-[200px] border-x border-secondary/10 px-8">
+<div class="w-12 h-12 flex items-center justify-center text-secondary mb-3">
+<span class="material-symbols-outlined text-3xl" data-icon="palette">palette</span>
+</div>
+<span class="font-label uppercase tracking-[0.15em] text-[11px] font-semibold text-secondary mb-1">En cours</span>
+<p class="font-headline font-bold text-tertiary">Préparez vos pigments</p>
+</div>
+<!-- Tip 3 -->
+<div class="flex flex-col items-center text-center max-w-[200px]">
+<div class="w-12 h-12 flex items-center justify-center text-primary mb-3">
+<span class="material-symbols-outlined text-3xl" data-icon="brush">brush</span>
+</div>
+<span class="font-label uppercase tracking-[0.15em] text-[11px] font-semibold text-tertiary mb-1">Étape III</span>
+<p class="font-headline italic text-tertiary">Lissez vos pinceaux</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Anchor -->
+<div class="border-t-2 border-double border-[#765b00]/20"></div>
+<footer class="flex flex-col md:flex-row justify-between items-center w-full px-12 py-8 gap-4 bg-[#fef9f1] dark:bg-stone-900">
+<div class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] text-[#445386]/70 dark:text-stone-500">
+            © MDCCCLXXXIV Bibliophile Enchanté Atelier
+        </div>
+<div class="flex gap-8">
+<a class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] text-[#445386]/70 dark:text-stone-500 hover:text-[#a51f16] transition-colors" href="#">Provenance</a>
+<a class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] text-[#445386]/70 dark:text-stone-500 hover:text-[#a51f16] transition-colors" href="#">Privacy</a>
+<a class="font-['Instrument_Sans'] uppercase tracking-[0.15em] text-[10px] text-[#445386]/70 dark:text-stone-500 hover:text-[#a51f16] transition-colors underline decoration-[#765b00]" href="#">Terms of Artistry</a>
+</div>
+</footer>
+<!-- Scattered Texture Elements -->
+<div class="fixed top-[15%] left-[5%] pointer-events-none font-headline font-extrabold text-[120px] opacity-[0.03] text-tertiary select-none">1</div>
+<div class="fixed bottom-[10%] right-[10%] pointer-events-none font-headline font-extrabold text-[120px] opacity-[0.03] text-tertiary select-none">2</div>
+</body></html>
