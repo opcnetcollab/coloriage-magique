@@ -32,6 +32,12 @@ services:
     restart: unless-stopped
     expose:
       - "80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.coloriage-magique.rule=Host(`coloriage-magique.srv1465877.hstgr.cloud`)
+      - traefik.http.routers.coloriage-magique.entrypoints=websecure
+      - traefik.http.routers.coloriage-magique.tls.certresolver=letsencrypt
+      - traefik.http.services.coloriage-magique.loadbalancer.server.port=80
     depends_on:
       - api
       - web
