@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useId } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence, useSpring, useMotionValue, useTransform } from "framer-motion";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic"];
 const ACCEPTED_EXTENSIONS = ".jpg,.jpeg,.png,.webp,.heic";
@@ -19,41 +20,38 @@ function validateFile(file: File): string | null {
   const typeOk =
     ACCEPTED_TYPES.includes(file.type) ||
     file.name.toLowerCase().endsWith(".heic");
-  if (!typeOk) {
-    return "Format non supporté. Utilisez JPEG, PNG, WEBP ou HEIC.";
-  }
-  if (file.size > MAX_SIZE_BYTES) {
+  if (!typeOk) return "Format non supporté. Utilisez JPEG, PNG, WEBP ou HEIC.";
+  if (file.size > MAX_SIZE_BYTES)
     return `Image trop lourde (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum : ${MAX_SIZE_MB} MB.`;
-  }
   return null;
 }
 
-/** Floating crayon particle — absolutely positioned background decoration */
-function CrayonParticle({
-  emoji,
-  style,
-}: {
-  emoji: string;
-  style: React.CSSProperties;
-}) {
+/** Animated SVG dashed border that draws itself */
+function AnimatedBorder({ isDragging }: { isDragging: boolean }) {
+  const strokeColor = isDragging ? "oklch(75% 0.15 70)" : "oklch(75% 0.08 70)";
   return (
-    <span
-      className="absolute select-none pointer-events-none text-2xl animate-drift"
-      style={style}
+    <svg
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      {emoji}
-    </span>
+      <rect
+        x="2" y="2"
+        width="calc(100% - 4px)" height="calc(100% - 4px)"
+        rx="24" ry="24"
+        fill="none"
+        stroke={strokeColor}
+        strokeWidth="2"
+        strokeDasharray="8 6"
+        style={{
+          strokeDashoffset: isDragging ? 0 : 200,
+          transition: "stroke-dashoffset 0.6s ease, stroke 0.3s ease",
+          animation: isDragging ? "none" : "dashDraw 3s ease forwards",
+        }}
+      />
+    </svg>
   );
 }
-
-const PARTICLES: Array<{ emoji: string; style: React.CSSProperties }> = [
-  { emoji: "🖍️", style: { top: "12%", left: "8%",  animationDelay: "0s",    animationDuration: "4s"   } },
-  { emoji: "✏️", style: { top: "20%", right: "10%", animationDelay: "1.2s",  animationDuration: "5s"   } },
-  { emoji: "🖍️", style: { bottom: "18%", left: "12%", animationDelay: "0.6s", animationDuration: "4.5s" } },
-  { emoji: "✏️", style: { bottom: "10%", right: "8%", animationDelay: "1.8s", animationDuration: "3.8s" } },
-  { emoji: "🎨", style: { top: "50%", left: "4%",   animationDelay: "0.9s",  animationDuration: "4.2s" } },
-];
 
 export default function UploadZone({ onFile, file }: UploadZoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,6 +59,19 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
   const [error, setError] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     file ? URL.createObjectURL(file) : null
+  );
+  const errorId = useId();
+
+  // Spring for drag-over scale
+  const dragScale = useSpring(1, { stiffness: 400, damping: 25 });
+  const dragGlow = useMotionValue(0);
+  const boxShadow = useTransform(
+    dragGlow,
+    [0, 1],
+    [
+      "0 4px 24px oklch(75% 0.15 70 / 0.1)",
+      "0 8px 48px oklch(75% 0.15 70 / 0.35)",
+    ]
   );
 
   const handleFile = useCallback(
@@ -83,11 +94,13 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
   const onDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
+      dragScale.set(1);
+      dragGlow.set(0);
       setState("idle");
       const dropped = e.dataTransfer.files[0];
       if (dropped) handleFile(dropped);
     },
-    [handleFile]
+    [handleFile, dragScale, dragGlow]
   );
 
   const onInputChange = useCallback(
@@ -106,102 +119,161 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
     setError(null);
   };
 
-  // ── Preview state ──────────────────────────────────────────────────────────
+  // ── Preview state ──────────────────────────────────────────────────
   if (state === "preview" && previewUrl) {
     return (
-      <div className="flex flex-col items-center gap-3 animate-screen-enter">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col items-center gap-3"
+      >
         <div
-          className="card-amber relative w-full aspect-video overflow-hidden"
-          style={{ padding: 0 }}
+          className="relative w-full aspect-video rounded-3xl overflow-hidden"
+          style={{
+            border: "1px solid oklch(85% 0.04 70)",
+            boxShadow: "0 8px 32px oklch(75% 0.15 70 / 0.15)",
+          }}
         >
           <Image
             src={previewUrl}
             alt="Aperçu de votre image"
             fill
             className="object-contain"
-            style={{ backgroundColor: "#fef3e2" }}
+            style={{ backgroundColor: "oklch(98% 0.01 80)" }}
             unoptimized
           />
         </div>
         <button
           type="button"
           onClick={reset}
-          className="text-sm font-body text-amber-600 underline hover:text-amber-700 transition-colors"
+          className="text-sm font-body underline transition-colors"
+          style={{ color: "oklch(60% 0.12 70)" }}
         >
           Changer d&apos;image
         </button>
-      </div>
+      </motion.div>
     );
   }
 
-  // ── Idle / Dragging state ──────────────────────────────────────────────────
   const isDragging = state === "dragging";
 
   return (
     <div className="flex flex-col gap-2">
       {/* Drop zone */}
-      <div
-        className={`
-          relative flex flex-col items-center justify-center gap-5
-          rounded-3xl border-2 border-dashed p-10 text-center min-h-[260px]
-          transition-all duration-200 cursor-pointer select-none overflow-hidden
-          ${isDragging
-            ? "border-amber-500 bg-amber-50 scale-[1.01] shadow-amber-md"
-            : "border-amber-400/50 hover:border-amber-500/70 hover:shadow-amber-sm animate-pulse-border"
+      <motion.div
+        style={{ boxShadow }}
+        animate={{
+          scale: isDragging ? 1.02 : 1,
+          backgroundColor: isDragging
+            ? "oklch(97% 0.03 80)"
+            : "oklch(98% 0.01 80)",
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 28 }}
+        className="relative flex flex-col items-center justify-center gap-5 rounded-3xl p-10 text-center min-h-[260px] cursor-pointer select-none overflow-hidden"
+        onDragOver={(e) => {
+          e.preventDefault();
+          if (state !== "dragging") {
+            setState("dragging");
+            dragScale.set(1.08);
+            dragGlow.set(1);
           }
-        `}
-        style={{ backgroundColor: isDragging ? undefined : "#fffbf5" }}
-        onDragOver={(e) => { e.preventDefault(); setState("dragging"); }}
-        onDragEnter={(e) => { e.preventDefault(); setState("dragging"); }}
-        onDragLeave={() => setState("idle")}
+        }}
+        onDragEnter={(e) => {
+          e.preventDefault();
+          setState("dragging");
+          dragScale.set(1.08);
+          dragGlow.set(1);
+        }}
+        onDragLeave={() => {
+          setState("idle");
+          dragScale.set(1);
+          dragGlow.set(0);
+        }}
         onDrop={onDrop}
         onClick={() => inputRef.current?.click()}
         role="button"
         tabIndex={0}
         aria-label="Zone de dépôt photo — activez pour sélectionner un fichier"
-        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
+        onKeyDown={(e) =>
+          (e.key === "Enter" || e.key === " ") && inputRef.current?.click()
+        }
       >
-        {/* Floating crayon particles */}
-        {PARTICLES.map((p, i) => (
-          <CrayonParticle key={i} emoji={p.emoji} style={p.style} />
-        ))}
+        {/* Animated SVG dashed border */}
+        <AnimatedBorder isDragging={isDragging} />
 
-        {/* Pencil icon with drift animation */}
-        <div
-          className={`text-5xl z-10 transition-all duration-300 ${
-            isDragging ? "scale-125" : "animate-float"
-          }`}
+        {/* Shimmer overlay (idle only) */}
+        {!isDragging && (
+          <div
+            className="absolute inset-0 pointer-events-none rounded-3xl"
+            style={{
+              background:
+                "linear-gradient(105deg, transparent 40%, oklch(95% 0.02 80 / 0.6) 50%, transparent 60%)",
+              backgroundSize: "200% 100%",
+              animation: "shimmerSlide 3s ease-in-out infinite",
+            }}
+            aria-hidden
+          />
+        )}
+
+        {/* Glow on drag-over */}
+        <AnimatePresence>
+          {isDragging && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 rounded-3xl pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, oklch(75% 0.15 70 / 0.12) 0%, transparent 70%)",
+              }}
+              aria-hidden
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Pencil icon with spring rotate */}
+        <motion.div
+          animate={{
+            rotate: isDragging ? 10 : -15,
+            scale: isDragging ? 1.25 : 1,
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="text-5xl z-10"
           aria-hidden="true"
+          style={{ display: "inline-block" }}
         >
           {isDragging ? "📂" : "✏️"}
-        </div>
+        </motion.div>
 
         {/* Headline + subtext */}
         <div className="flex flex-col gap-1.5 z-10">
-          <p className="font-display font-bold text-lg text-warm-900" style={{ color: "#1c1917" }}>
+          <p
+            className="font-display font-extrabold text-xl"
+            style={{ color: "oklch(18% 0.02 60)", letterSpacing: "-0.02em" }}
+          >
             {isDragging ? "Relâchez pour uploader" : "Glissez votre photo ici"}
           </p>
-          <p className="font-body text-sm" style={{ color: "#5f5b55" }}>
+          <p className="font-body text-sm" style={{ color: "oklch(45% 0.02 60)" }}>
             ou cliquez pour parcourir vos fichiers
           </p>
         </div>
 
-        {/* CTA button */}
-        <button
+        {/* CTA button — soft pulse */}
+        <motion.button
           type="button"
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           className="btn-primary z-10 text-sm pointer-events-none"
           style={{ padding: "0.625rem 1.75rem" }}
           tabIndex={-1}
           aria-hidden="true"
         >
           Choisir une photo
-        </button>
+        </motion.button>
 
-        {/* Format hint — single element so regex /JPEG.*PNG.*WEBP.*HEIC/i matches */}
-        <p
-          className="text-xs z-10 font-body"
-          style={{ color: "#7b7670" }}
-        >
+        {/* Format hint */}
+        <p className="text-xs z-10 font-body" style={{ color: "oklch(55% 0.02 60)" }}>
           JPEG · PNG · WEBP · HEIC — max {MAX_SIZE_MB} MB
         </p>
 
@@ -214,24 +286,29 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
           onChange={onInputChange}
           aria-hidden="true"
         />
-      </div>
+      </motion.div>
 
       {/* Error message */}
-      {error && (
-        <p
-          className="text-sm rounded-2xl px-4 py-2 flex items-center gap-1.5 font-body"
-          style={{
-            color: "#b91c1c",
-            backgroundColor: "#fef2f2",
-            border: "1px solid rgba(239,68,68,0.15)",
-          }}
-          role="alert"
-          aria-describedby="upload-error"
-        >
-          <span aria-hidden="true">⚠️</span>
-          <span id="upload-error">{error}</span>
-        </p>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            className="text-sm rounded-2xl px-4 py-2 flex items-center gap-1.5 font-body"
+            style={{
+              color: "#b91c1c",
+              backgroundColor: "#fef2f2",
+              border: "1px solid rgba(239,68,68,0.15)",
+            }}
+            role="alert"
+            id={errorId}
+          >
+            <span aria-hidden="true">⚠️</span>
+            <span>{error}</span>
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
