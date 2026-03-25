@@ -4,35 +4,37 @@ import type { Difficulty } from "@/lib/api";
 
 interface DifficultyOption {
   value: Difficulty;
-  color: string;          // badge circle color
+  emoji: string;
   label: string;
   description: string;
   range: string;
-  badge?: string;
+  popularBadge?: boolean;    // purple "Populaire" badge
+  a3Badge?: string;          // amber pill badge (e.g. "A3 recommandé")
 }
 
 const OPTIONS: DifficultyOption[] = [
   {
     value: "beginner",
-    color: "#22C55E",
+    emoji: "🌱",
     label: "Débutant",
     description: "Parfait pour les petits",
     range: "5-8 couleurs",
   },
   {
     value: "intermediate",
-    color: "#EAB308",
+    emoji: "🎨",
     label: "Confirmé",
     description: "Pour les amateurs éclairés",
     range: "8-14 couleurs",
+    popularBadge: true,
   },
   {
     value: "expert",
-    color: "#EF4444",
+    emoji: "🖼️",
     label: "Expert",
-    description: "Pour les passionnés",
+    description: "Pour les passionnés du détail",
     range: "14-25 couleurs",
-    badge: "A3 recommandé",
+    a3Badge: "A3 recommandé",
   },
 ];
 
@@ -47,17 +49,18 @@ export default function DifficultySelector({
 }: DifficultySelectorProps) {
   return (
     <div
-      className="flex flex-col gap-2"
+      className="flex flex-col gap-3"
       role="radiogroup"
       aria-label="Niveau de complexité"
     >
-      <p className="text-sm font-display font-semibold text-[#312e29]">
+      <p className="text-sm font-display font-semibold" style={{ color: "#1c1917" }}>
         Niveau de complexité
       </p>
 
       <div className="grid grid-cols-3 gap-3">
         {OPTIONS.map((opt) => {
           const isSelected = value === opt.value;
+
           return (
             <button
               key={opt.value}
@@ -66,68 +69,80 @@ export default function DifficultySelector({
               onClick={() => onChange(opt.value)}
               className={`
                 relative flex flex-col items-center gap-2 rounded-3xl px-3 py-5
-                text-center shadow-card transition-all duration-200
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f8a010]
+                text-center transition-all duration-200
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500
                 active:scale-[0.97]
-                ${
-                  isSelected
-                    ? "border-2 border-[#f8a010] bg-amber-50/60 shadow-glow-amber"
-                    : "border border-[rgba(178,172,165,0.3)] bg-white hover:bg-[#eee7de]/40 hover:border-[rgba(167,139,250,0.4)]"
+                ${isSelected
+                  ? "border-2 border-amber-500 shadow-amber-lg"
+                  : "border border-amber-200/50 hover:border-amber-400/50 hover:shadow-amber-sm"
                 }
               `}
+              style={{
+                background: isSelected
+                  ? "linear-gradient(145deg, #fff, #fffbeb)"
+                  : "white",
+                boxShadow: isSelected
+                  ? "0 20px 60px rgba(217,119,6,0.22)"
+                  : "0 8px 40px rgba(49,46,41,0.06)",
+              }}
             >
-              {/* A3 recommended badge */}
-              {opt.badge && (
+              {/* "Populaire" badge — purple, top-right */}
+              {opt.popularBadge && (
                 <span
-                  className="
-                    absolute -top-2.5 left-1/2 -translate-x-1/2
-                    rounded-full bg-amber-400 text-white
-                    px-2 py-0.5 text-[10px] font-display font-bold
-                    whitespace-nowrap shadow-sm
-                  "
+                  className="absolute top-3 right-3 rounded-full px-2 py-0.5 text-[10px] font-display font-bold"
+                  style={{ backgroundColor: "#7c3aed", color: "white" }}
                 >
-                  {opt.badge}
+                  Populaire
                 </span>
               )}
 
-              {/* Difficulty circle */}
-              <span
-                className="h-8 w-8 rounded-full shadow-sm flex-shrink-0"
-                style={{ backgroundColor: opt.color }}
-                aria-hidden="true"
-              />
+              {/* "A3 recommandé" pill — amber, top-center */}
+              {opt.a3Badge && (
+                <span
+                  className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[10px] font-display font-bold whitespace-nowrap shadow-sm"
+                  style={{ backgroundColor: "#d97706", color: "white" }}
+                >
+                  {opt.a3Badge}
+                </span>
+              )}
+
+              {/* Emoji large */}
+              <span className="text-5xl leading-none" aria-hidden="true">
+                {opt.emoji}
+              </span>
 
               {/* Label */}
-              <span className="font-display font-semibold text-sm text-[#312e29] leading-tight">
+              <span
+                className="font-display font-bold text-base leading-tight"
+                style={{ color: "#1c1917" }}
+              >
                 {opt.label}
               </span>
 
-              {/* Color count chip */}
+              {/* Range badge */}
               <span
-                className="
-                  rounded-full px-2 py-0.5 text-[11px] font-display font-semibold
-                  bg-[#ff8bc5]/20 text-[#a02d70]
-                "
+                className="rounded-full px-2 py-0.5 text-[11px] font-display font-semibold"
+                style={{ backgroundColor: "#fef3c7", color: "#b45309" }}
               >
                 {opt.range}
               </span>
 
               {/* Description */}
-              <span className="text-xs text-[#5f5b55] font-body leading-tight">
+              <span
+                className="text-xs font-body leading-relaxed"
+                style={{ color: "#5f5b55" }}
+              >
                 {opt.description}
               </span>
 
-              {/* Selected checkmark */}
+              {/* Selected checkmark badge */}
               {isSelected && (
                 <span
-                  className="
-                    absolute top-2 right-2 h-5 w-5 rounded-full
-                    bg-[#f8a010] text-white flex items-center justify-center
-                    text-xs font-bold shadow-sm
-                  "
+                  className="mt-1 rounded-full px-2 py-0.5 text-[10px] font-display font-bold"
+                  style={{ backgroundColor: "#fef3c7", color: "#d97706" }}
                   aria-hidden="true"
                 >
-                  ✓
+                  ✓ Sélectionné
                 </span>
               )}
             </button>

@@ -28,19 +28,32 @@ function validateFile(file: File): string | null {
   return null;
 }
 
-/** Cloud upload icon with float animation */
-function UploadIcon({ dragging }: { dragging: boolean }) {
+/** Floating crayon particle — absolutely positioned background decoration */
+function CrayonParticle({
+  emoji,
+  style,
+}: {
+  emoji: string;
+  style: React.CSSProperties;
+}) {
   return (
-    <div
-      className={`text-5xl transition-all duration-300 ${
-        dragging ? "scale-125" : "animate-float"
-      }`}
+    <span
+      className="absolute select-none pointer-events-none text-2xl animate-drift"
+      style={style}
       aria-hidden="true"
     >
-      {dragging ? "📂" : "☁️"}
-    </div>
+      {emoji}
+    </span>
   );
 }
+
+const PARTICLES: Array<{ emoji: string; style: React.CSSProperties }> = [
+  { emoji: "🖍️", style: { top: "12%", left: "8%",  animationDelay: "0s",    animationDuration: "4s"   } },
+  { emoji: "✏️", style: { top: "20%", right: "10%", animationDelay: "1.2s",  animationDuration: "5s"   } },
+  { emoji: "🖍️", style: { bottom: "18%", left: "12%", animationDelay: "0.6s", animationDuration: "4.5s" } },
+  { emoji: "✏️", style: { bottom: "10%", right: "8%", animationDelay: "1.8s", animationDuration: "3.8s" } },
+  { emoji: "🎨", style: { top: "50%", left: "4%",   animationDelay: "0.9s",  animationDuration: "4.2s" } },
+];
 
 export default function UploadZone({ onFile, file }: UploadZoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -93,27 +106,27 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
     setError(null);
   };
 
-  // ── Preview state ───────────────────────────────────────────
+  // ── Preview state ──────────────────────────────────────────────────────────
   if (state === "preview" && previewUrl) {
     return (
       <div className="flex flex-col items-center gap-3 animate-screen-enter">
         <div
-          className="relative w-full aspect-video rounded-3xl overflow-hidden
-                     border-2 border-primary-purple/40 shadow-card"
+          className="card-amber relative w-full aspect-video overflow-hidden"
+          style={{ padding: 0 }}
         >
           <Image
             src={previewUrl}
             alt="Aperçu de votre image"
             fill
-            className="object-contain bg-surface-low"
+            className="object-contain"
+            style={{ backgroundColor: "#fef3e2" }}
             unoptimized
           />
         </div>
         <button
           type="button"
           onClick={reset}
-          className="text-sm text-on-surface-variant underline hover:text-on-surface
-                     transition-colors font-body"
+          className="text-sm font-body text-amber-600 underline hover:text-amber-700 transition-colors"
         >
           Changer d&apos;image
         </button>
@@ -121,22 +134,23 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
     );
   }
 
-  // ── Idle / Dragging state ───────────────────────────────────
+  // ── Idle / Dragging state ──────────────────────────────────────────────────
   const isDragging = state === "dragging";
 
   return (
     <div className="flex flex-col gap-2">
+      {/* Drop zone */}
       <div
         className={`
-          relative flex flex-col items-center justify-center gap-4
-          rounded-5xl border-2 border-dashed p-12 text-center min-h-[280px]
-          transition-all duration-200 cursor-pointer select-none
-          ${
-            isDragging
-              ? "border-[#A78BFA] bg-purple-50 shadow-glow-purple scale-[1.01]"
-              : "border-[rgba(167,139,250,0.4)] bg-[#FFF8F0] hover:border-[rgba(167,139,250,0.7)] hover:shadow-glow-purple hover:scale-[1.005]"
+          relative flex flex-col items-center justify-center gap-5
+          rounded-3xl border-2 border-dashed p-10 text-center min-h-[260px]
+          transition-all duration-200 cursor-pointer select-none overflow-hidden
+          ${isDragging
+            ? "border-amber-500 bg-amber-50 scale-[1.01] shadow-amber-md"
+            : "border-amber-400/50 hover:border-amber-500/70 hover:shadow-amber-sm animate-pulse-border"
           }
         `}
+        style={{ backgroundColor: isDragging ? undefined : "#fffbf5" }}
         onDragOver={(e) => { e.preventDefault(); setState("dragging"); }}
         onDragEnter={(e) => { e.preventDefault(); setState("dragging"); }}
         onDragLeave={() => setState("idle")}
@@ -147,32 +161,47 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
         aria-label="Zone de dépôt photo — activez pour sélectionner un fichier"
         onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
       >
-        {/* Floating upload icon */}
-        <UploadIcon dragging={isDragging} />
+        {/* Floating crayon particles */}
+        {PARTICLES.map((p, i) => (
+          <CrayonParticle key={i} emoji={p.emoji} style={p.style} />
+        ))}
 
-        {/* Text */}
-        <div className="flex flex-col gap-1">
-          <p className="font-display font-semibold text-base text-[#312e29]">
-            {isDragging ? "Relâchez pour uploader" : "Glissez votre photo ici"}
-          </p>
-          <p className="text-sm text-[#5f5b55]">ou</p>
+        {/* Pencil icon with drift animation */}
+        <div
+          className={`text-5xl z-10 transition-all duration-300 ${
+            isDragging ? "scale-125" : "animate-float"
+          }`}
+          aria-hidden="true"
+        >
+          {isDragging ? "📂" : "✏️"}
         </div>
 
-        {/* CTA button — gradient amber → pink, pill shape */}
+        {/* Headline + subtext */}
+        <div className="flex flex-col gap-1.5 z-10">
+          <p className="font-display font-bold text-lg text-warm-900" style={{ color: "#1c1917" }}>
+            {isDragging ? "Relâchez pour uploader" : "Glissez votre photo ici"}
+          </p>
+          <p className="font-body text-sm" style={{ color: "#5f5b55" }}>
+            ou cliquez pour parcourir vos fichiers
+          </p>
+        </div>
+
+        {/* CTA button */}
         <button
           type="button"
-          className="
-            px-6 py-2.5 rounded-full
-            bg-gradient-to-r from-amber-400 to-pink-400
-            text-white font-display font-semibold text-sm
-            shadow-md hover:shadow-lg hover:scale-105
-            transition-all duration-150 pointer-events-none
-          "
+          className="btn-primary z-10 text-sm pointer-events-none"
+          style={{ padding: "0.625rem 1.75rem" }}
+          tabIndex={-1}
+          aria-hidden="true"
         >
           Choisir une photo
         </button>
 
-        <p className="text-xs text-[#5f5b55]">
+        {/* Format hint — single element so regex /JPEG.*PNG.*WEBP.*HEIC/i matches */}
+        <p
+          className="text-xs z-10 font-body"
+          style={{ color: "#7b7670" }}
+        >
           JPEG · PNG · WEBP · HEIC — max {MAX_SIZE_MB} MB
         </p>
 
@@ -187,9 +216,15 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
         />
       </div>
 
+      {/* Error message */}
       {error && (
         <p
-          className="text-sm text-red-600 bg-red-50 rounded-2xl px-4 py-2 flex items-center gap-1"
+          className="text-sm rounded-2xl px-4 py-2 flex items-center gap-1.5 font-body"
+          style={{
+            color: "#b91c1c",
+            backgroundColor: "#fef2f2",
+            border: "1px solid rgba(239,68,68,0.15)",
+          }}
           role="alert"
           aria-describedby="upload-error"
         >
