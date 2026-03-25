@@ -18,7 +18,6 @@ type State = "idle" | "dragging" | "preview";
 function validateFile(file: File): string | null {
   const typeOk =
     ACCEPTED_TYPES.includes(file.type) ||
-    // HEIC sometimes has no mime type
     file.name.toLowerCase().endsWith(".heic");
   if (!typeOk) {
     return "Format non supporté. Utilisez JPEG, PNG, WEBP ou HEIC.";
@@ -27,6 +26,20 @@ function validateFile(file: File): string | null {
     return `Image trop lourde (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum : ${MAX_SIZE_MB} MB.`;
   }
   return null;
+}
+
+/** Cloud upload icon with float animation */
+function UploadIcon({ dragging }: { dragging: boolean }) {
+  return (
+    <div
+      className={`text-5xl transition-all duration-300 ${
+        dragging ? "scale-125" : "animate-float"
+      }`}
+      aria-hidden="true"
+    >
+      {dragging ? "📂" : "☁️"}
+    </div>
+  );
 }
 
 export default function UploadZone({ onFile, file }: UploadZoneProps) {
@@ -68,7 +81,6 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const selected = e.target.files?.[0];
       if (selected) handleFile(selected);
-      // reset input so same file can be re-selected
       e.target.value = "";
     },
     [handleFile]
@@ -81,23 +93,27 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
     setError(null);
   };
 
-  // ── Preview state ──────────────────────────────────────────
+  // ── Preview state ───────────────────────────────────────────
   if (state === "preview" && previewUrl) {
     return (
-      <div className="flex flex-col items-center gap-3">
-        <div className="relative w-full aspect-video rounded-xl overflow-hidden border-2 border-purple-300 shadow">
+      <div className="flex flex-col items-center gap-3 animate-screen-enter">
+        <div
+          className="relative w-full aspect-video rounded-3xl overflow-hidden
+                     border-2 border-primary-purple/40 shadow-card"
+        >
           <Image
             src={previewUrl}
             alt="Aperçu de votre image"
             fill
-            className="object-contain bg-gray-50"
+            className="object-contain bg-surface-low"
             unoptimized
           />
         </div>
         <button
           type="button"
           onClick={reset}
-          className="text-sm text-gray-500 underline hover:text-gray-700 transition-colors"
+          className="text-sm text-on-surface-variant underline hover:text-on-surface
+                     transition-colors font-body"
         >
           Changer d&apos;image
         </button>
@@ -105,19 +121,20 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
     );
   }
 
-  // ── Idle / Dragging state ──────────────────────────────────
+  // ── Idle / Dragging state ───────────────────────────────────
   const isDragging = state === "dragging";
 
   return (
     <div className="flex flex-col gap-2">
       <div
         className={`
-          relative flex flex-col items-center justify-center gap-3
-          rounded-2xl border-2 border-dashed p-10 text-center
-          transition-colors cursor-pointer
-          ${isDragging
-            ? "border-purple-500 bg-purple-50"
-            : "border-gray-300 bg-gray-50 hover:border-purple-400 hover:bg-purple-50/40"
+          relative flex flex-col items-center justify-center gap-4
+          rounded-5xl border-2 border-dashed p-12 text-center min-h-[280px]
+          transition-all duration-200 cursor-pointer select-none
+          ${
+            isDragging
+              ? "border-[#A78BFA] bg-purple-50 shadow-glow-purple scale-[1.01]"
+              : "border-[rgba(167,139,250,0.4)] bg-[#FFF8F0] hover:border-[rgba(167,139,250,0.7)] hover:shadow-glow-purple hover:scale-[1.005]"
           }
         `}
         onDragOver={(e) => { e.preventDefault(); setState("dragging"); }}
@@ -127,27 +144,37 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
         onClick={() => inputRef.current?.click()}
         role="button"
         tabIndex={0}
-        aria-label="Zone de dépôt d'image"
-        onKeyDown={(e) => e.key === "Enter" && inputRef.current?.click()}
+        aria-label="Zone de dépôt photo — activez pour sélectionner un fichier"
+        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
       >
-        <span className="text-4xl">{isDragging ? "📂" : "🖼️"}</span>
-        <p className="text-gray-600 font-medium">
-          {isDragging
-            ? "Relâchez pour uploader"
-            : "Glissez votre photo ici"}
-        </p>
-        <p className="text-xs text-gray-400">
-          JPEG · PNG · WEBP · HEIC — max {MAX_SIZE_MB} MB
-        </p>
+        {/* Floating upload icon */}
+        <UploadIcon dragging={isDragging} />
 
+        {/* Text */}
+        <div className="flex flex-col gap-1">
+          <p className="font-display font-semibold text-base text-[#312e29]">
+            {isDragging ? "Relâchez pour uploader" : "Glissez votre photo ici"}
+          </p>
+          <p className="text-sm text-[#5f5b55]">ou</p>
+        </div>
+
+        {/* CTA button — gradient amber → pink, pill shape */}
         <button
           type="button"
-          className="mt-1 px-4 py-2 rounded-lg bg-purple-600 text-white text-sm
-                     font-semibold hover:bg-purple-700 active:scale-95 transition-all
-                     shadow-sm pointer-events-none"
+          className="
+            px-6 py-2.5 rounded-full
+            bg-gradient-to-r from-amber-400 to-pink-400
+            text-white font-display font-semibold text-sm
+            shadow-md hover:shadow-lg hover:scale-105
+            transition-all duration-150 pointer-events-none
+          "
         >
-          Choisir depuis mon appareil
+          Choisir une photo
         </button>
+
+        <p className="text-xs text-[#5f5b55]">
+          JPEG · PNG · WEBP · HEIC — max {MAX_SIZE_MB} MB
+        </p>
 
         {/* Hidden real input */}
         <input
@@ -161,8 +188,13 @@ export default function UploadZone({ onFile, file }: UploadZoneProps) {
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 flex items-center gap-1" role="alert">
-          <span>⚠️</span> {error}
+        <p
+          className="text-sm text-red-600 bg-red-50 rounded-2xl px-4 py-2 flex items-center gap-1"
+          role="alert"
+          aria-describedby="upload-error"
+        >
+          <span aria-hidden="true">⚠️</span>
+          <span id="upload-error">{error}</span>
         </p>
       )}
     </div>

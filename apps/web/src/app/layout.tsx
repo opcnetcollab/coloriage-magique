@@ -1,5 +1,20 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Coloriage Magique",
@@ -18,7 +33,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body className="antialiased">{children}</body>
+      <body
+        className={`${plusJakartaSans.variable} ${beVietnamPro.variable} font-body antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
