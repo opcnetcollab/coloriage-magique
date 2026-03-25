@@ -36,22 +36,31 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-amber-100 via-purple-100 to-pink-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+    <main
+      className="
+        min-h-screen
+        bg-gradient-to-br from-amber-50 via-purple-50 to-pink-50
+        flex items-center justify-center p-4
+      "
+    >
+      <div className="w-full max-w-lg animate-screen-enter">
+        {/* ── Hero ──────────────────────────────────────── */}
+        <div className="text-center mb-8">
+          <h1 className="font-display font-extrabold text-4xl tracking-tight text-[#312e29]">
             🎨 Coloriage Magique
           </h1>
-          <p className="mt-2 text-gray-600">
+          <p className="mt-3 font-body text-base text-[#5f5b55] leading-relaxed">
             Transformez n&apos;importe quelle photo en coloriage imprimable.
           </p>
         </div>
 
-        {/* Card */}
+        {/* ── Main Card — glass effect ────────────────── */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-3xl shadow-xl p-6 flex flex-col gap-6"
+          className="
+            bg-white/80 backdrop-blur-sm rounded-4xl shadow-xl
+            p-7 flex flex-col gap-7
+          "
         >
           {/* Step 1 — Upload */}
           <section>
@@ -72,26 +81,35 @@ export default function HomePage() {
           {/* Step 3 — Format */}
           <section>
             <StepLabel number={3} label="Format d&apos;impression" />
-            <div className="mt-3 flex gap-3">
+            <div
+              className="mt-3 flex gap-3"
+              role="radiogroup"
+              aria-label="Format d'impression"
+            >
               {(["a4", "a3"] as Format[]).map((f) => (
                 <button
                   key={f}
                   type="button"
                   onClick={() => setFormat(f)}
-                  aria-pressed={format === f}
+                  role="radio"
+                  aria-checked={format === f}
                   className={`
-                    flex-1 rounded-xl border-2 py-3 font-semibold text-sm uppercase
-                    transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500
+                    flex-1 rounded-3xl border-2 py-3 font-display font-semibold text-sm uppercase
+                    transition-all duration-200
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f8a010]
+                    active:scale-[0.97]
                     ${
                       format === f
-                        ? "border-purple-500 bg-violet-50 text-purple-700"
-                        : "border-gray-200 bg-white text-gray-600 hover:border-purple-300"
+                        ? "border-[#f8a010] bg-amber-50/60 text-amber-700 shadow-glow-amber"
+                        : "border-[rgba(178,172,165,0.3)] bg-white text-[#5f5b55] hover:border-[rgba(167,139,250,0.4)]"
                     }
                   `}
                 >
                   {f.toUpperCase()}
                   {f === "a3" && (
-                    <span className="ml-1 text-xs text-purple-500">(grand)</span>
+                    <span className="ml-1 text-xs text-amber-500 font-body font-normal normal-case">
+                      (grand)
+                    </span>
                   )}
                 </button>
               ))}
@@ -101,24 +119,26 @@ export default function HomePage() {
           {/* Error */}
           {error && (
             <p
-              className="text-sm text-red-600 bg-red-50 rounded-xl px-4 py-2 flex items-center gap-2"
+              className="text-sm text-red-700 bg-red-50 rounded-2xl px-4 py-2 flex items-center gap-2"
               role="alert"
             >
-              <span>⚠️</span> {error}
+              <span aria-hidden="true">⚠️</span> {error}
             </p>
           )}
 
-          {/* Submit */}
+          {/* Submit — gradient amber → pink with sparkle on hover */}
           <button
             type="submit"
             disabled={!canSubmit}
             className={`
-              w-full rounded-2xl py-4 font-bold text-lg text-white shadow-md
-              transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500
+              w-full rounded-full py-4 font-display font-bold text-lg shadow-md
+              transition-all duration-150
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f8a010]
+              group
               ${
                 canSubmit
-                  ? "bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 active:scale-95"
-                  : "bg-gray-300 cursor-not-allowed"
+                  ? "bg-gradient-to-r from-amber-400 to-pink-400 text-white hover:shadow-glow-amber hover:-translate-y-0.5 active:scale-95"
+                  : "bg-[#e3dcd2] text-[#b2aca5] cursor-not-allowed"
               }
             `}
           >
@@ -127,12 +147,20 @@ export default function HomePage() {
                 <Spinner /> Envoi en cours…
               </span>
             ) : (
-              "✨ Générer mon coloriage"
+              <span className="flex items-center justify-center gap-2">
+                <span
+                  className={canSubmit ? "group-hover:animate-sparkle inline-block" : "inline-block"}
+                  aria-hidden="true"
+                >
+                  ✨
+                </span>
+                Générer mon coloriage
+              </span>
             )}
           </button>
         </form>
 
-        <p className="text-center text-xs text-gray-400 mt-4">
+        <p className="text-center text-xs text-[#b2aca5] font-body mt-4">
           Vos images sont traitées de façon sécurisée et supprimées sous 24h.
         </p>
       </div>
@@ -143,10 +171,18 @@ export default function HomePage() {
 function StepLabel({ number, label }: { number: number; label: string }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-600 text-xs font-bold text-white">
+      <span
+        className="
+          flex h-6 w-6 items-center justify-center rounded-full
+          bg-gradient-to-br from-amber-400 to-pink-400
+          text-xs font-display font-bold text-white shadow-sm
+        "
+      >
         {number}
       </span>
-      <span className="font-semibold text-gray-800">{label}</span>
+      <span className="font-display font-semibold text-sm text-[#312e29]">
+        {label}
+      </span>
     </div>
   );
 }
